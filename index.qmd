@@ -1,5 +1,23 @@
 ---
-title: "hazelvaq.github.io"
+title: "Hazel Vaquero"
+toc: false
+about:
+  template: trestles
+  links: 
+    - text: LinkedIn
+      href: https://www.linkedin.com/in/hazel-vaquero-7923741a9/
+      icon: linkedin
+    - text: Github
+      href: https://github.com/hazelvaq
+      icon: github
+    - text: Email
+      href: mailto::hazelvaquero@ucsb.edu
 ---
 
-Hi this is ___!
+## Education:
+
+University of California, Santa Barbara (June 2024): MEDS Environmental Data Science 
+
+The City College of New York(2022): BE Earth System Science and Environmental Engineering 
+
+## Experience:
