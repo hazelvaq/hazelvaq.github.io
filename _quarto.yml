@@ -9,13 +9,17 @@ website:
       - href: index.qmd
         text: Home
       - about.qmd
+      - href: recources.qmd
+        text: Recources
 
 format:
   html:
-    theme: cosmo
+    theme: 
+      light: lumen
+      dark: cyborg
     css: styles.css
     toc: false
     page-layout: full
 
-editor: visual
+editor: source
 
