@@ -15,10 +15,9 @@ website:
 format:
   html:
     theme: 
-      light: lumen
-      dark: cyborg
-    css: styles.css
-    toc: false
+      - styles.scss
+    mainfont: Pixelify Sans
+    toc: true
     page-layout: full
 
 editor: source
