@@ -26,5 +26,33 @@
     "title": "Hazel Vaquero",
     "section": "Experience:",
     "text": "Experience:"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "My first blog post\n\n\n\n\n\n\n\nQuarto\n\n\nMEDS\n\n\nWorkshop\n\n\n\n\nNew blog post\n\n\n\n\n\n\nOct 23, 2023\n\n\nHazel Vaquero\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "blog/2023-10-23-my-first-post/index.html",
+    "href": "blog/2023-10-23-my-first-post/index.html",
+    "title": "My first blog post",
+    "section": "",
+    "text": ":)"
+  },
+  {
+    "objectID": "blog/2023-10-23-my-first-post/index.html#this-is-my-first-section",
+    "href": "blog/2023-10-23-my-first-post/index.html#this-is-my-first-section",
+    "title": "My first blog post",
+    "section": "",
+    "text": ":)"
+  },
+  {
+    "objectID": "blog/2023-10-23-my-first-post/index.html#this-is-my-second-section",
+    "href": "blog/2023-10-23-my-first-post/index.html#this-is-my-second-section",
+    "title": "My first blog post",
+    "section": "This is my second section",
+    "text": "This is my second section\n:("
   }
 ]
