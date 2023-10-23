@@ -1,0 +1,26 @@
+---
+title: "My first blog post"
+description: "New blog post"
+author: 
+  - name: Hazel Vaquero
+    url: https://hazelvaq.github.io/ 
+    #orcid: 0
+    affiliation: MEDS
+    affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science/academics-meds
+date: 10-23-2023
+categories: [Quarto, MEDS, Workshop]
+citation: 
+  url: https://hazelvaq.github.io/blog/2023-10-23-my-first-post/
+#image: imagename.png
+draft: false
+---
+
+## This is my first section
+:)[^1]
+
+[^1]: this is my first footnote
+
+## This is my second section
+:(^[this is an inline footnote]
+
+## References
