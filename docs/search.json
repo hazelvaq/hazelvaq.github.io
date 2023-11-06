@@ -7,6 +7,48 @@
     "text": "About this site\n\nthis text is a h1 header but does not have the class .title\n\n\nthis is also a level one header (h1)\n\nthis is a title\n\n\nthis will also be red\n\n\nthis will be red"
   },
   {
+    "objectID": "blog/2023-10-23-my-first-post/index.html",
+    "href": "blog/2023-10-23-my-first-post/index.html",
+    "title": "My first blog post",
+    "section": "",
+    "text": "Hi this is the start of my first blog post trial"
+  },
+  {
+    "objectID": "blog/2023-10-23-my-first-post/index.html#this-is-my-first-section",
+    "href": "blog/2023-10-23-my-first-post/index.html#this-is-my-first-section",
+    "title": "My first blog post",
+    "section": "This is my first section",
+    "text": "This is my first section\n:)1"
+  },
+  {
+    "objectID": "blog/2023-10-23-my-first-post/index.html#this-is-my-second-section",
+    "href": "blog/2023-10-23-my-first-post/index.html#this-is-my-second-section",
+    "title": "My first blog post",
+    "section": "This is my second section",
+    "text": "This is my second section\n:(2"
+  },
+  {
+    "objectID": "blog/2023-10-23-my-first-post/index.html#references",
+    "href": "blog/2023-10-23-my-first-post/index.html#references",
+    "title": "My first blog post",
+    "section": "References",
+    "text": "References"
+  },
+  {
+    "objectID": "blog/2023-10-23-my-first-post/index.html#footnotes",
+    "href": "blog/2023-10-23-my-first-post/index.html#footnotes",
+    "title": "My first blog post",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nthis is my first footnote↩︎\nthis is an inline footnote↩︎"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "My first blog post\n\n\n\nQuarto\n\n\nMEDS\n\n\nWorkshop\n\n\n\nthis is my short description\n\n\n\nHazel Vaquero\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Hazel Vaquero",
@@ -26,72 +68,5 @@
     "title": "Hazel Vaquero",
     "section": "Experience:",
     "text": "Experience:"
-  },
-  {
-<<<<<<< HEAD
-    "objectID": "blog/2023-10-23-my-first-post/index.html",
-    "href": "blog/2023-10-23-my-first-post/index.html",
-    "title": "My first blog post",
-    "section": "",
-    "text": ":)1"
-  },
-  {
-    "objectID": "blog/2023-10-23-my-first-post/index.html#this-is-my-first-section",
-    "href": "blog/2023-10-23-my-first-post/index.html#this-is-my-first-section",
-    "title": "My first blog post",
-    "section": "",
-    "text": ":)1"
-  },
-  {
-    "objectID": "blog/2023-10-23-my-first-post/index.html#this-is-my-second-section",
-    "href": "blog/2023-10-23-my-first-post/index.html#this-is-my-second-section",
-    "title": "My first blog post",
-    "section": "This is my second section",
-    "text": "This is my second section\n:(2"
-  },
-  {
-=======
->>>>>>> 47fbb79a102d03a5690f6fef4148f58212a7e259
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Blog",
-    "section": "",
-    "text": "My first blog post\n\n\n\n\n\n\n\nQuarto\n\n\nMEDS\n\n\nWorkshop\n\n\n\n\nNew blog post\n\n\n\n\n\n\nOct 23, 2023\n\n\nHazel Vaquero\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-<<<<<<< HEAD
-    "objectID": "blog/2023-10-23-my-first-post/index.html#footnotes",
-    "href": "blog/2023-10-23-my-first-post/index.html#footnotes",
-    "title": "My first blog post",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nthis is my first footnote↩︎\nthis is an inline footnote↩︎"
-  },
-  {
-    "objectID": "blog/2023-10-23-my-first-post/index.html#references",
-    "href": "blog/2023-10-23-my-first-post/index.html#references",
-    "title": "My first blog post",
-    "section": "References",
-    "text": "References"
-=======
-    "objectID": "blog/2023-10-23-my-first-post/index.html",
-    "href": "blog/2023-10-23-my-first-post/index.html",
-    "title": "My first blog post",
-    "section": "",
-    "text": ":)"
-  },
-  {
-    "objectID": "blog/2023-10-23-my-first-post/index.html#this-is-my-first-section",
-    "href": "blog/2023-10-23-my-first-post/index.html#this-is-my-first-section",
-    "title": "My first blog post",
-    "section": "",
-    "text": ":)"
-  },
-  {
-    "objectID": "blog/2023-10-23-my-first-post/index.html#this-is-my-second-section",
-    "href": "blog/2023-10-23-my-first-post/index.html#this-is-my-second-section",
-    "title": "My first blog post",
-    "section": "This is my second section",
-    "text": "This is my second section\n:("
->>>>>>> 47fbb79a102d03a5690f6fef4148f58212a7e259
   }
 ]
