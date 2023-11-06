@@ -1,19 +1,21 @@
 ---
 title: "My first blog post"
-description: "New blog post"
+description: "this is my short description"
 author: 
   - name: Hazel Vaquero
     url: https://hazelvaq.github.io/ 
     #orcid: 0
     affiliation: MEDS
     affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science/academics-meds
-date: 10-23-2023
+published: 10-23-2023
 categories: [Quarto, MEDS, Workshop]
 citation: 
   url: https://hazelvaq.github.io/blog/2023-10-23-my-first-post/
 #image: imagename.png
 draft: false
 ---
+
+Hi this is the start of my first blog post `trial`
 
 ## This is my first section
 :)[^1]

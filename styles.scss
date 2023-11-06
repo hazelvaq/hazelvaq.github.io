@@ -5,14 +5,14 @@
 
 
 // Colors
-$lavender: #E4CBE8;
-$light-green: #F0F4C2;
+$lavender: #E6E6FA;
+$white: #FFFFFF;
 $orange: #F9B943;
 
 // base document Colors
-$navbar-bg: $lavender;
+$navbar-bg: $white;
 $navbar-fg: $orange;
-$body-bg: $light-green;
+$body-bg: $lavender;
 $footer-bg: $orange;
 $link-color: $lavender;
 
@@ -20,7 +20,7 @@ $link-color: $lavender;
 
 h1,h2 {
   letter-spacing: 5px;
-  color: $green;
+  color: $black;
 }
 
 .title {
