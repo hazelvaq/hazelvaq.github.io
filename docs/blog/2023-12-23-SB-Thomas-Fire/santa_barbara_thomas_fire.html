@@ -228,7 +228,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In this notebook we use 3 different data sets.</p>
 <section id="aqi-time-series-data" class="level4">
 <h4 class="anchored" data-anchor-id="aqi-time-series-data">AQI Time series Data</h4>
-<p><strong>1) <a href="https://www.epa.gov/outdoor-air-quality-data">EPA’s Air Quality Data Collected at Outdoor Monitor Stations</a></strong></p>
+<p><strong><a href="https://www.epa.gov/outdoor-air-quality-data">EPA’s Air Quality Data Collected at Outdoor Monitor Stations</a></strong></p>
 <p>The first dataset contains information on daily AQI readings across the United States. AQI readings are an indicator that allow the public to understand how polluted their air is. AQI is divided into 6 categories: - Good - Moderate - Unhealthy for Sensetive Groups - Unhealthy - Very Unhealthy - Hazardous</p>
 <p>Higher levels in AQI translate to more pollution present in the atmosphere.</p>
 <p>This dataset has been download from the <a href="https://aqs.epa.gov/aqsweb/airdata/download_files.html#AQI">EPA’s Air Quality System (AQS)</a> as a datset. We are interested in 2017 and 2018 Daily AQI by county data. It has 10 columns recording information about the state name, date recorded, AQI, AQI category, and county name. For this analysis we will use the following columns: - <strong>County name</strong>: County where AQI levels were measured - <strong>AQI</strong>: air quality measure reported (based on PM2.5 present in the atmosphere)</p>
@@ -236,11 +236,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="thomas-fire-scar-data" class="level4">
 <h4 class="anchored" data-anchor-id="thomas-fire-scar-data">Thomas Fire Scar Data</h4>
-<p><strong>2) <a href="https://gis.data.ca.gov/datasets/CALFIRE-Forestry::california-fire-perimeters-all-1/about">California Fire Perimeter</a></strong></p>
+<p><strong><a href="https://gis.data.ca.gov/datasets/CALFIRE-Forestry::california-fire-perimeters-all-1/about">California Fire Perimeter</a></strong></p>
 <p>This is a shapefile of California wildfires from 1878 to 2022. The data is updated annually in the spring with the fire perimeters from the previous fire season. As noted by The State of California and the Department of Forestry and Fire Protection this data provides a spatial distribution of the past large fires in California. But, this data is in no way a complete potrayal of the past fires. There are historical data missing, over generalization of big fires, and duplicated fires. Exercise caution when using this shapefile.</p>
 <p>This shapefile has been downloaded from <a href="https://gis.data.ca.gov/datasets/CALFIRE-Forestry::california-fire-perimeters-all-1/about">California Govt State Geoportal</a>. It contains 23 columns recording information on the: year, location, cause, acres, and fire name. For this analysis we will be using the following columns: - <strong>Fire name</strong>: name of reported fire - <strong>Shape Area</strong>: Geometry of reported fire, will help with mapping</p>
 <p>Additional data can be found in the <a href="https://www.arcgis.com/sharing/rest/content/items/e3802d2abf8741a187e73a9db49d68fe/info/metadata/metadata.xml?format=default&amp;output=html">Fire Perimeters Description</a></p>
-<p><strong>3) <a href="https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2">Landsat Data</a></strong></p>
+<p><strong><a href="https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2">Landsat Data</a></strong></p>
 <p>This is a NetCDF file of a raster of Santa Barbara visualizing Santa Barbara. The data was accessed and pre-processed in the Microsoft Planetary Computer. The raster consists of three dimensions: x,y, band. It also contains the following data variables: red, green, blue, nir08(near infared), swir22(short wave). For this analysis we are only interested in the: - <strong>x and y dimension</strong> - <strong><code>swir22</code>, <code>nir08</code>,<code>red</code></strong></p>
 <p>Additional information regarding the Landsat bands can be found at the following <a href="https://www.usgs.gov/faqs/what-are-band-designations-landsat-satellites">USGS</a> <a href="https://www.usgs.gov/media/images/common-landsat-band-combinations">websites</a>.</p>
 </section>
