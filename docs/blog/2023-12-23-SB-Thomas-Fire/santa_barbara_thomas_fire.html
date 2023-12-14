@@ -9,7 +9,7 @@
 <meta name="author" content="Hazel Vaquero">
 <meta name="description" content="An analysis of Santa Barbara’s 2021 Thomas Fire, visualizing the scar the fire left. As well as analyzing the air quaility level at the time.">
 
-<title>Santa Barbara 2021 Thomas Fire AQI and fire scar</title>
+<title>2021 Thomas Fire Air Quality Index and Fire Scar Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -95,9 +95,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 </head>
@@ -141,7 +138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-page-left">
-      <h1 class="title">Santa Barbara 2021 Thomas Fire AQI and fire scar</h1>
+      <h1 class="title">2021 Thomas Fire Air Quality Index and Fire Scar Analysis</h1>
                   <div>
         <div class="description">
           An analysis of Santa Barbara’s 2021 Thomas Fire, visualizing the scar the fire left. As well as analyzing the air quaility level at the time.
@@ -188,13 +185,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#about" id="toc-about" class="nav-link active" data-scroll-target="#about">About</a></li>
-  <li><a href="#about-the-datasets" id="toc-about-the-datasets" class="nav-link" data-scroll-target="#about-the-datasets">About the Datasets</a></li>
+  <li><a href="#datasets" id="toc-datasets" class="nav-link" data-scroll-target="#datasets">Datasets</a></li>
   <li><a href="#final-output" id="toc-final-output" class="nav-link" data-scroll-target="#final-output">Final Output</a></li>
+  <li><a href="#geographic-context" id="toc-geographic-context" class="nav-link" data-scroll-target="#geographic-context">Geographic Context</a></li>
   <li><a href="#import-libraries" id="toc-import-libraries" class="nav-link" data-scroll-target="#import-libraries">Import Libraries</a></li>
   <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">Import Data</a></li>
-  <li><a href="#prepare-data" id="toc-prepare-data" class="nav-link" data-scroll-target="#prepare-data">Prepare Data</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a></li>
   <li><a href="#data-selection" id="toc-data-selection" class="nav-link" data-scroll-target="#data-selection">Data Selection</a></li>
-  <li><a href="#geographic-context" id="toc-geographic-context" class="nav-link" data-scroll-target="#geographic-context">Geographic Context</a></li>
   <li><a href="#data-visualization" id="toc-data-visualization" class="nav-link" data-scroll-target="#data-visualization">Data Visualization</a>
   <ul class="collapse">
   <li><a href="#time-series" id="toc-time-series" class="nav-link" data-scroll-target="#time-series">Time Series</a></li>
@@ -211,39 +208,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="about" class="level2">
 <h2 class="anchored" data-anchor-id="about">About</h2>
-<p>In this notebook we create a time series showing Averaged Air Quaility Index(AQI) for Santa Barbara in 2017 to observe the affects of the Thomas Fire. As well as creating a raster map of Santa Barbara fire scar from the Thomas Fire.</p>
-<section id="highlights" class="level4">
-<h4 class="anchored" data-anchor-id="highlights">Highlights</h4>
-<ul>
-<li>Fetch vector data from online repository</li>
-<li>Data wrangling with <code>pandas</code></li>
-<li>Time series analysis with <code>matplotlib</code></li>
-<li>Raster wrangling with <code>rioxarray</code></li>
-<li>plot a color infared image</li>
-</ul>
+<p>In this notebook I analyzed the affects of the Santa Barbara 2017 Thomas Fire. I created a time series showing the Averaged Air Quaility Index(AQI) from 2017 to 2018. As well as creating a raster map of the scar caused by the Thomas Fire.</p>
+<p>Additional information can be found at my repository: https://github.com/hazelvaq/Santa-Barbara-Thomas-Fire.git</p>
 </section>
-</section>
-<section id="about-the-datasets" class="level2">
-<h2 class="anchored" data-anchor-id="about-the-datasets">About the Datasets</h2>
-<p>In this notebook we use 3 different data sets.</p>
-<section id="aqi-time-series-data" class="level4">
-<h4 class="anchored" data-anchor-id="aqi-time-series-data">AQI Time series Data</h4>
+<section id="datasets" class="level2">
+<h2 class="anchored" data-anchor-id="datasets">Datasets</h2>
 <p><strong><a href="https://www.epa.gov/outdoor-air-quality-data">EPA’s Air Quality Data Collected at Outdoor Monitor Stations</a></strong></p>
-<p>The first dataset contains information on daily AQI readings across the United States. AQI readings are an indicator that allow the public to understand how polluted their air is. AQI is divided into 6 categories: - Good - Moderate - Unhealthy for Sensetive Groups - Unhealthy - Very Unhealthy - Hazardous</p>
-<p>Higher levels in AQI translate to more pollution present in the atmosphere.</p>
-<p>This dataset has been download from the <a href="https://aqs.epa.gov/aqsweb/airdata/download_files.html#AQI">EPA’s Air Quality System (AQS)</a> as a datset. We are interested in 2017 and 2018 Daily AQI by county data. It has 10 columns recording information about the state name, date recorded, AQI, AQI category, and county name. For this analysis we will use the following columns: - <strong>County name</strong>: County where AQI levels were measured - <strong>AQI</strong>: air quality measure reported (based on PM2.5 present in the atmosphere)</p>
+<p>The first dataset contains information on daily AQI readings across the United States. AQI readings are an indicator that allow the public to understand how polluted their air is. Higher levels in AQI translate to more pollution present in the atmosphere.</p>
+<p>This dataset has been download from the <a href="https://aqs.epa.gov/aqsweb/airdata/download_files.html#AQI">EPA’s Air Quality System (AQS)</a>.</p>
 <p>Additional information and metadata for this datset is available in the <a href="https://aqs.epa.gov/aqsweb/airdata/FileFormats.html">Airdata Download Files Documentation</a></p>
-</section>
-<section id="thomas-fire-scar-data" class="level4">
-<h4 class="anchored" data-anchor-id="thomas-fire-scar-data">Thomas Fire Scar Data</h4>
 <p><strong><a href="https://gis.data.ca.gov/datasets/CALFIRE-Forestry::california-fire-perimeters-all-1/about">California Fire Perimeter</a></strong></p>
-<p>This is a shapefile of California wildfires from 1878 to 2022. The data is updated annually in the spring with the fire perimeters from the previous fire season. As noted by The State of California and the Department of Forestry and Fire Protection this data provides a spatial distribution of the past large fires in California. But, this data is in no way a complete potrayal of the past fires. There are historical data missing, over generalization of big fires, and duplicated fires. Exercise caution when using this shapefile.</p>
-<p>This shapefile has been downloaded from <a href="https://gis.data.ca.gov/datasets/CALFIRE-Forestry::california-fire-perimeters-all-1/about">California Govt State Geoportal</a>. It contains 23 columns recording information on the: year, location, cause, acres, and fire name. For this analysis we will be using the following columns: - <strong>Fire name</strong>: name of reported fire - <strong>Shape Area</strong>: Geometry of reported fire, will help with mapping</p>
+<p>As noted by The State of California and the Department of Forestry and Fire Protection this data provides a spatial distribution of the past large fires in California. But, this data is in no way a complete potrayal of the past fires.</p>
+<p>This shapefile has been downloaded from <a href="https://gis.data.ca.gov/datasets/CALFIRE-Forestry::california-fire-perimeters-all-1/about">California Govt State Geoportal</a>.</p>
 <p>Additional data can be found in the <a href="https://www.arcgis.com/sharing/rest/content/items/e3802d2abf8741a187e73a9db49d68fe/info/metadata/metadata.xml?format=default&amp;output=html">Fire Perimeters Description</a></p>
 <p><strong><a href="https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2">Landsat Data</a></strong></p>
-<p>This is a NetCDF file of a raster of Santa Barbara visualizing Santa Barbara. The data was accessed and pre-processed in the Microsoft Planetary Computer. The raster consists of three dimensions: x,y, band. It also contains the following data variables: red, green, blue, nir08(near infared), swir22(short wave). For this analysis we are only interested in the: - <strong>x and y dimension</strong> - <strong><code>swir22</code>, <code>nir08</code>,<code>red</code></strong></p>
+<p>This is a NetCDF file of a raster of Santa Barbara visualizing Santa Barbara. The data was accessed and pre-processed in the Microsoft Planetary Computer. The raster consists of three dimensions: x,y, band. It also contains the following data variables: red, green, blue, nir08(near infared), swir22(short wave).</p>
 <p>Additional information regarding the Landsat bands can be found at the following <a href="https://www.usgs.gov/faqs/what-are-band-designations-landsat-satellites">USGS</a> <a href="https://www.usgs.gov/media/images/common-landsat-band-combinations">websites</a>.</p>
-</section>
 </section>
 <section id="final-output" class="level2">
 <h2 class="anchored" data-anchor-id="final-output">Final Output</h2>
@@ -265,6 +245,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </ins></ins></section>
+<section id="geographic-context" class="level2">
+<h2 class="anchored" data-anchor-id="geographic-context">Geographic Context</h2>
+<p>For context, let see where Santa Barbara county is relative to California</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="santa_barbara_thomas_fire_files/figure-html/0b0009c8-39d0-4fb2-acfc-07bf2cf6ab86-1-sb_ca.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">sb_ca.png</figcaption>
+</figure>
+</div>
+</section>
 <section id="import-libraries" class="level2">
 <h2 class="anchored" data-anchor-id="import-libraries">Import Libraries</h2>
 <p>Import necessary libraries for data wrangling and geospatial analysis</p>
@@ -289,718 +279,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="import-data" class="level2">
 <h2 class="anchored" data-anchor-id="import-data">Import Data</h2>
-<section id="daily-aqi-data" class="level4">
-<h4 class="anchored" data-anchor-id="daily-aqi-data">Daily AQI Data</h4>
-<p>I am interested in <code>daily_aqi_by_county_2017.zip</code> and <code>daily_aqi_by_county_2018.zip</code>. Using the url above we import our data.</p>
+<p>Import neccessary data.</p>
 <div class="cell" data-tags="[]" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in 2017 Daily AQI by County data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>aqi_17 <span class="op">=</span> pd.read_csv(<span class="st">"https://aqs.epa.gov/aqsweb/airdata/daily_aqi_by_county_2017.zip"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read in 2018 Daily AQI by County data</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>aqi_18 <span class="op">=</span> pd.read_csv(<span class="st">"https://aqs.epa.gov/aqsweb/airdata/daily_aqi_by_county_2018.zip"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>aqi_18 <span class="op">=</span> pd.read_csv(<span class="st">"https://aqs.epa.gov/aqsweb/airdata/daily_aqi_by_county_2018.zip"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># read in 2017 and 2018 Daily AQI by County data</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>aqi_17 <span class="op">=</span> pd.read_csv(<span class="st">"https://aqs.epa.gov/aqsweb/airdata/daily_aqi_by_county_2017.zip"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>aqi_18 <span class="op">=</span> pd.read_csv(<span class="st">"https://aqs.epa.gov/aqsweb/airdata/daily_aqi_by_county_2018.zip"</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Import California wildfire data</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>wildfires <span class="op">=</span> gpd.read_file(<span class="st">'data/California_Fire_Perimeters_2017/California_Fire_Perimeters_2017.shp'</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Import Landsat</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>landsat <span class="op">=</span> rioxr.open_rasterio(os.path.join(os.getcwd(),<span class="st">'data'</span>,<span class="st">'landsat8-2018-01-26-sb-simplified.nc'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="california-wildfire-data" class="level4">
-<h4 class="anchored" data-anchor-id="california-wildfire-data">California Wildfire Data</h4>
-<p>I am interested in aquiring <code>California_Fire_Perimeters_2017.shp</code> and <code>landsat8-2018-01-26-sb-simplified.nc</code>.</p>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import California wildfire data</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>wildfires <span class="op">=</span> gpd.read_file(<span class="st">'data/California_Fire_Perimeters_2017/California_Fire_Perimeters_2017.shp'</span>)</span>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
+<section id="aqi" class="level4">
+<h4 class="anchored" data-anchor-id="aqi">AQI</h4>
+<p>Before I can plot a time series of the daily AQI I need to prepare the data. I need to combine the two years(2017 and 2018) of AQI, clean the columns, and update the object types.</p>
+<div class="cell" data-tags="[]" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># "Glue" aqi_17 and aqi_18</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>aqi <span class="op">=</span> pd.concat([aqi_17,aqi_18])</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Import Landsat</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>landsat <span class="op">=</span> rioxr.open_rasterio(os.path.join(os.getcwd(),<span class="st">'data'</span>,<span class="st">'landsat8-2018-01-26-sb-simplified.nc'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-</section>
-<section id="prepare-data" class="level2">
-<h2 class="anchored" data-anchor-id="prepare-data">Prepare Data</h2>
-<section id="aqui-data-preparation" class="level4">
-<h4 class="anchored" data-anchor-id="aqui-data-preparation">AQUI Data Preparation</h4>
-<p>We have two seperate dataframes, we should combine them for our analysis</p>
-<div class="cell" data-tags="[]" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># "Glue" aqi_17 and aqi_18</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>aqi <span class="op">=</span> pd.concat([aqi_17,aqi_18])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Before we continue our analysis we should update the column names in a more programmer friendly manner. Update the column names to be lower case and replace the blank space with <code>_</code>.</p>
-<div class="cell" data-tags="[]" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Update column by making lower case and replace space with underscore</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>aqi.columns <span class="op">=</span> aqi.columns.<span class="bu">str</span>.lower().<span class="bu">str</span>.replace(<span class="st">' '</span>,<span class="st">'_'</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># View our updates</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>aqi.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
-<div>
-
-
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">state_name</th>
-<th data-quarto-table-cell-role="th">county_name</th>
-<th data-quarto-table-cell-role="th">state_code</th>
-<th data-quarto-table-cell-role="th">county_code</th>
-<th data-quarto-table-cell-role="th">date</th>
-<th data-quarto-table-cell-role="th">aqi</th>
-<th data-quarto-table-cell-role="th">category</th>
-<th data-quarto-table-cell-role="th">defining_parameter</th>
-<th data-quarto-table-cell-role="th">defining_site</th>
-<th data-quarto-table-cell-role="th">number_of_sites_reporting</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>Alabama</td>
-<td>Baldwin</td>
-<td>1</td>
-<td>3</td>
-<td>2017-01-01</td>
-<td>21</td>
-<td>Good</td>
-<td>PM2.5</td>
-<td>01-003-0010</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>Alabama</td>
-<td>Baldwin</td>
-<td>1</td>
-<td>3</td>
-<td>2017-01-04</td>
-<td>22</td>
-<td>Good</td>
-<td>PM2.5</td>
-<td>01-003-0010</td>
-<td>1</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>Alabama</td>
-<td>Baldwin</td>
-<td>1</td>
-<td>3</td>
-<td>2017-01-10</td>
-<td>19</td>
-<td>Good</td>
-<td>PM2.5</td>
-<td>01-003-0010</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<p>Let us check our dataset type</p>
-<div class="cell" data-tags="[]" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check data types of columns</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>aqi.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
-<pre><code>state_name                   object
-county_name                  object
-state_code                    int64
-county_code                   int64
-date                         object
-aqi                           int64
-category                     object
-defining_parameter           object
-defining_site                object
-number_of_sites_reporting     int64
-dtype: object</code></pre>
-</div>
-</div>
-<p>Notice that our <code>date</code> column is an object. Let’s change that to a <code>datetime64</code>. And update our <code>date</code> column to be the index.</p>
-<div class="cell" data-tags="[]" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># update date column to be datetime object</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>aqi <span class="op">=</span> aqi.copy()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>aqi.date <span class="op">=</span> pd.to_datetime(aqi.date)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(aqi.dtypes)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>aqi <span class="op">=</span> aqi.set_index(<span class="st">"date"</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># View index change</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(aqi.index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>state_name                           object
-county_name                          object
-state_code                            int64
-county_code                           int64
-date                         datetime64[ns]
-aqi                                   int64
-category                             object
-defining_parameter                   object
-defining_site                        object
-number_of_sites_reporting             int64
-dtype: object
-DatetimeIndex(['2017-01-01', '2017-01-04', '2017-01-10', '2017-01-13',
-               '2017-01-16', '2017-01-19', '2017-01-22', '2017-01-25',
-               '2017-01-28', '2017-01-31',
-               ...
-               '2018-12-22', '2018-12-23', '2018-12-24', '2018-12-25',
-               '2018-12-26', '2018-12-27', '2018-12-28', '2018-12-29',
-               '2018-12-30', '2018-12-31'],
-              dtype='datetime64[ns]', name='date', length=654338, freq=None)</code></pre>
-</div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Update column by making lower case and replace space with underscore</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>aqi.columns <span class="op">=</span> aqi.columns.<span class="bu">str</span>.lower().<span class="bu">str</span>.replace(<span class="st">' '</span>,<span class="st">'_'</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># update date column to be datetime object</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>aqi <span class="op">=</span> aqi.copy()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>aqi.date <span class="op">=</span> pd.to_datetime(aqi.date)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Set date to indez</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>aqi <span class="op">=</span> aqi.set_index(<span class="st">"date"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="landsat-data-preparation" class="level4">
 <h4 class="anchored" data-anchor-id="landsat-data-preparation">Landsat Data Preparation</h4>
-<p>First we can take a quick look at our <code>landsat</code></p>
-<div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View landsat</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>landsat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
-
-<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
-<defs>
-<symbol id="icon-database" viewbox="0 0 32 32">
-<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
-<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
-<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
-</symbol>
-<symbol id="icon-file-text2" viewbox="0 0 32 32">
-<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
-<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-</symbol>
-</defs>
-</svg>
-<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
- *
- */
-
-:root {
-  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-  --xr-border-color: var(--jp-border-color2, #e0e0e0);
-  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-  --xr-background-color: var(--jp-layout-color0, white);
-  --xr-background-color-row-even: var(--jp-layout-color1, white);
-  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
-}
-
-html[theme=dark],
-body.vscode-dark {
-  --xr-font-color0: rgba(255, 255, 255, 1);
-  --xr-font-color2: rgba(255, 255, 255, 0.54);
-  --xr-font-color3: rgba(255, 255, 255, 0.38);
-  --xr-border-color: #1F1F1F;
-  --xr-disabled-color: #515151;
-  --xr-background-color: #111111;
-  --xr-background-color-row-even: #111111;
-  --xr-background-color-row-odd: #313131;
-}
-
-.xr-wrap {
-  display: block;
-  min-width: 300px;
-  max-width: 700px;
-}
-
-.xr-text-repr-fallback {
-  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
-  display: none;
-}
-
-.xr-header {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  margin-bottom: 4px;
-  border-bottom: solid 1px var(--xr-border-color);
-}
-
-.xr-header > div,
-.xr-header > ul {
-  display: inline;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.xr-obj-type,
-.xr-array-name {
-  margin-left: 2px;
-  margin-right: 10px;
-}
-
-.xr-obj-type {
-  color: var(--xr-font-color2);
-}
-
-.xr-sections {
-  padding-left: 0 !important;
-  display: grid;
-  grid-template-columns: 150px auto auto 1fr 20px 20px;
-}
-
-.xr-section-item {
-  display: contents;
-}
-
-.xr-section-item input {
-  display: none;
-}
-
-.xr-section-item input + label {
-  color: var(--xr-disabled-color);
-}
-
-.xr-section-item input:enabled + label {
-  cursor: pointer;
-  color: var(--xr-font-color2);
-}
-
-.xr-section-item input:enabled + label:hover {
-  color: var(--xr-font-color0);
-}
-
-.xr-section-summary {
-  grid-column: 1;
-  color: var(--xr-font-color2);
-  font-weight: 500;
-}
-
-.xr-section-summary > span {
-  display: inline-block;
-  padding-left: 0.5em;
-}
-
-.xr-section-summary-in:disabled + label {
-  color: var(--xr-font-color2);
-}
-
-.xr-section-summary-in + label:before {
-  display: inline-block;
-  content: '►';
-  font-size: 11px;
-  width: 15px;
-  text-align: center;
-}
-
-.xr-section-summary-in:disabled + label:before {
-  color: var(--xr-disabled-color);
-}
-
-.xr-section-summary-in:checked + label:before {
-  content: '▼';
-}
-
-.xr-section-summary-in:checked + label > span {
-  display: none;
-}
-
-.xr-section-summary,
-.xr-section-inline-details {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-.xr-section-inline-details {
-  grid-column: 2 / -1;
-}
-
-.xr-section-details {
-  display: none;
-  grid-column: 1 / -1;
-  margin-bottom: 5px;
-}
-
-.xr-section-summary-in:checked ~ .xr-section-details {
-  display: contents;
-}
-
-.xr-array-wrap {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 20px auto;
-}
-
-.xr-array-wrap > label {
-  grid-column: 1;
-  vertical-align: top;
-}
-
-.xr-preview {
-  color: var(--xr-font-color3);
-}
-
-.xr-array-preview,
-.xr-array-data {
-  padding: 0 5px !important;
-  grid-column: 2;
-}
-
-.xr-array-data,
-.xr-array-in:checked ~ .xr-array-preview {
-  display: none;
-}
-
-.xr-array-in:checked ~ .xr-array-data,
-.xr-array-preview {
-  display: inline-block;
-}
-
-.xr-dim-list {
-  display: inline-block !important;
-  list-style: none;
-  padding: 0 !important;
-  margin: 0;
-}
-
-.xr-dim-list li {
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-}
-
-.xr-dim-list:before {
-  content: '(';
-}
-
-.xr-dim-list:after {
-  content: ')';
-}
-
-.xr-dim-list li:not(:last-child):after {
-  content: ',';
-  padding-right: 5px;
-}
-
-.xr-has-index {
-  font-weight: bold;
-}
-
-.xr-var-list,
-.xr-var-item {
-  display: contents;
-}
-
-.xr-var-item > div,
-.xr-var-item label,
-.xr-var-item > .xr-var-name span {
-  background-color: var(--xr-background-color-row-even);
-  margin-bottom: 0;
-}
-
-.xr-var-item > .xr-var-name:hover span {
-  padding-right: 5px;
-}
-
-.xr-var-list > li:nth-child(odd) > div,
-.xr-var-list > li:nth-child(odd) > label,
-.xr-var-list > li:nth-child(odd) > .xr-var-name span {
-  background-color: var(--xr-background-color-row-odd);
-}
-
-.xr-var-name {
-  grid-column: 1;
-}
-
-.xr-var-dims {
-  grid-column: 2;
-}
-
-.xr-var-dtype {
-  grid-column: 3;
-  text-align: right;
-  color: var(--xr-font-color2);
-}
-
-.xr-var-preview {
-  grid-column: 4;
-}
-
-.xr-var-name,
-.xr-var-dims,
-.xr-var-dtype,
-.xr-preview,
-.xr-attrs dt {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 10px;
-}
-
-.xr-var-name:hover,
-.xr-var-dims:hover,
-.xr-var-dtype:hover,
-.xr-attrs dt:hover {
-  overflow: visible;
-  width: auto;
-  z-index: 1;
-}
-
-.xr-var-attrs,
-.xr-var-data {
-  display: none;
-  background-color: var(--xr-background-color) !important;
-  padding-bottom: 5px !important;
-}
-
-.xr-var-attrs-in:checked ~ .xr-var-attrs,
-.xr-var-data-in:checked ~ .xr-var-data {
-  display: block;
-}
-
-.xr-var-data > table {
-  float: right;
-}
-
-.xr-var-name span,
-.xr-var-data,
-.xr-attrs {
-  padding-left: 25px !important;
-}
-
-.xr-attrs,
-.xr-var-attrs,
-.xr-var-data {
-  grid-column: 1 / -1;
-}
-
-dl.xr-attrs {
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: 125px auto;
-}
-
-.xr-attrs dt,
-.xr-attrs dd {
-  padding: 0;
-  margin: 0;
-  float: left;
-  padding-right: 10px;
-  width: auto;
-}
-
-.xr-attrs dt {
-  font-weight: normal;
-  grid-column: 1;
-}
-
-.xr-attrs dt:hover span {
-  display: inline-block;
-  background: var(--xr-background-color);
-  padding-right: 10px;
-}
-
-.xr-attrs dd {
-  grid-column: 2;
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-
-.xr-icon-database,
-.xr-icon-file-text2 {
-  display: inline-block;
-  vertical-align: middle;
-  width: 1em;
-  height: 1.5em !important;
-  stroke-width: 0;
-  stroke: currentColor;
-  fill: currentColor;
-}
-</style><pre class="xr-text-repr-fallback">&lt;xarray.Dataset&gt;
-Dimensions:      (y: 731, x: 870, band: 1)
-Coordinates:
-  * y            (y) float64 3.952e+06 3.952e+06 ... 3.756e+06 3.755e+06
-  * x            (x) float64 1.213e+05 1.216e+05 ... 3.557e+05 3.559e+05
-  * band         (band) int64 1
-    spatial_ref  int64 0
-Data variables:
-    red          (band, y, x) float64 ...
-    green        (band, y, x) float64 ...
-    blue         (band, y, x) float64 ...
-    nir08        (band, y, x) float64 ...
-    swir22       (band, y, x) float64 ...</pre><div class="xr-wrap" hidden=""><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-8094806e-c9c8-478c-b820-2a4188b3ebad" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-8094806e-c9c8-478c-b820-2a4188b3ebad" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"><ul class="xr-dim-list"><li><span class="xr-has-index">y</span>: 731</li><li><span class="xr-has-index">x</span>: 870</li><li><span class="xr-has-index">band</span>: 1</li></ul></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-8848cedf-5113-4f4c-8989-5e0d59ad2fcb" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-8848cedf-5113-4f4c-8989-5e0d59ad2fcb" class="xr-section-summary">Coordinates: <span>(4)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">y</span></div><div class="xr-var-dims">(y)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">3.952e+06 3.952e+06 ... 3.755e+06</div><input id="attrs-88cf01cc-2c3e-44bd-a0ab-51fdd86fc600" class="xr-var-attrs-in" type="checkbox"><label for="attrs-88cf01cc-2c3e-44bd-a0ab-51fdd86fc600" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-45f5f6f8-5538-4c57-a81a-e45199741b3a" class="xr-var-data-in" type="checkbox"><label for="data-45f5f6f8-5538-4c57-a81a-e45199741b3a" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>axis :</span></dt><dd>Y</dd><dt><span>crs :</span></dt><dd>EPSG:32611</dd><dt><span>long_name :</span></dt><dd>y coordinate of projection</dd><dt><span>resolution :</span></dt><dd>-30</dd><dt><span>standard_name :</span></dt><dd>projection_y_coordinate</dd><dt><span>units :</span></dt><dd>metre</dd><dt><span>_FillValue :</span></dt><dd>nan</dd></dl></div><div class="xr-var-data"><pre>array([3952395., 3952125., 3951855., ..., 3755835., 3755565., 3755295.])</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">x</span></div><div class="xr-var-dims">(x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">1.213e+05 1.216e+05 ... 3.559e+05</div><input id="attrs-ba29ce1f-7d88-4bd8-a974-bf9df7f56810" class="xr-var-attrs-in" type="checkbox"><label for="attrs-ba29ce1f-7d88-4bd8-a974-bf9df7f56810" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-5346a89d-276c-413c-b58b-e0b63e03405b" class="xr-var-data-in" type="checkbox"><label for="data-5346a89d-276c-413c-b58b-e0b63e03405b" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>axis :</span></dt><dd>X</dd><dt><span>crs :</span></dt><dd>EPSG:32611</dd><dt><span>long_name :</span></dt><dd>x coordinate of projection</dd><dt><span>resolution :</span></dt><dd>30</dd><dt><span>standard_name :</span></dt><dd>projection_x_coordinate</dd><dt><span>units :</span></dt><dd>metre</dd><dt><span>_FillValue :</span></dt><dd>nan</dd></dl></div><div class="xr-var-data"><pre>array([121305., 121575., 121845., ..., 355395., 355665., 355935.])</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">band</span></div><div class="xr-var-dims">(band)</div><div class="xr-var-dtype">int64</div><div class="xr-var-preview xr-preview">1</div><input id="attrs-9058acdc-06e8-4b35-b4e3-53cf3899f4aa" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-9058acdc-06e8-4b35-b4e3-53cf3899f4aa" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-170d5a7a-c75b-4a01-8e06-d549eea98db0" class="xr-var-data-in" type="checkbox"><label for="data-170d5a7a-c75b-4a01-8e06-d549eea98db0" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array([1])</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>spatial_ref</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">int64</div><div class="xr-var-preview xr-preview">0</div><input id="attrs-6772563e-74f9-454e-82b9-e67f7c94b37c" class="xr-var-attrs-in" type="checkbox"><label for="attrs-6772563e-74f9-454e-82b9-e67f7c94b37c" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-1a21dc82-9fa7-4f2b-a100-72a0003953fc" class="xr-var-data-in" type="checkbox"><label for="data-1a21dc82-9fa7-4f2b-a100-72a0003953fc" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>crs_wkt :</span></dt><dd>PROJCS["WGS 84 / UTM zone 11N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-117],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","32611"]]</dd><dt><span>semi_major_axis :</span></dt><dd>6378137.0</dd><dt><span>semi_minor_axis :</span></dt><dd>6356752.314245179</dd><dt><span>inverse_flattening :</span></dt><dd>298.257223563</dd><dt><span>reference_ellipsoid_name :</span></dt><dd>WGS 84</dd><dt><span>longitude_of_prime_meridian :</span></dt><dd>0.0</dd><dt><span>prime_meridian_name :</span></dt><dd>Greenwich</dd><dt><span>geographic_crs_name :</span></dt><dd>WGS 84</dd><dt><span>horizontal_datum_name :</span></dt><dd>World Geodetic System 1984</dd><dt><span>projected_crs_name :</span></dt><dd>WGS 84 / UTM zone 11N</dd><dt><span>grid_mapping_name :</span></dt><dd>transverse_mercator</dd><dt><span>latitude_of_projection_origin :</span></dt><dd>0.0</dd><dt><span>longitude_of_central_meridian :</span></dt><dd>-117.0</dd><dt><span>false_easting :</span></dt><dd>500000.0</dd><dt><span>false_northing :</span></dt><dd>0.0</dd><dt><span>scale_factor_at_central_meridian :</span></dt><dd>0.9996</dd><dt><span>spatial_ref :</span></dt><dd>PROJCS["WGS 84 / UTM zone 11N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-117],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","32611"]]</dd><dt><span>GeoTransform :</span></dt><dd>121170.0 270.0 0.0 3952530.0 0.0 -270.0</dd></dl></div><div class="xr-var-data"><pre>array(0)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-ee53d99a-6e9e-4c49-a973-0f601a586eb7" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-ee53d99a-6e9e-4c49-a973-0f601a586eb7" class="xr-section-summary">Data variables: <span>(5)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>red</span></div><div class="xr-var-dims">(band, y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-11b7ea74-1bb5-42da-b482-f3e02caf9590" class="xr-var-attrs-in" type="checkbox"><label for="attrs-11b7ea74-1bb5-42da-b482-f3e02caf9590" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-bd45e2ba-0138-43ed-afe2-0a4e6570639a" class="xr-var-data-in" type="checkbox"><label for="data-bd45e2ba-0138-43ed-afe2-0a4e6570639a" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>add_offset :</span></dt><dd>0.0</dd><dt><span>coordinates :</span></dt><dd>time</dd><dt><span>scale_factor :</span></dt><dd>1.0</dd><dt><span>_FillValue :</span></dt><dd>0.0</dd></dl></div><div class="xr-var-data"><pre>[635970 values with dtype=float64]</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>green</span></div><div class="xr-var-dims">(band, y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-62bd444c-ab6e-45a9-ad00-08559fe49358" class="xr-var-attrs-in" type="checkbox"><label for="attrs-62bd444c-ab6e-45a9-ad00-08559fe49358" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-0f107eb2-b845-4e02-baa5-4111e5b02d0f" class="xr-var-data-in" type="checkbox"><label for="data-0f107eb2-b845-4e02-baa5-4111e5b02d0f" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>add_offset :</span></dt><dd>0.0</dd><dt><span>coordinates :</span></dt><dd>time</dd><dt><span>scale_factor :</span></dt><dd>1.0</dd><dt><span>_FillValue :</span></dt><dd>0.0</dd></dl></div><div class="xr-var-data"><pre>[635970 values with dtype=float64]</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>blue</span></div><div class="xr-var-dims">(band, y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-006a4db6-b8a4-48dc-8afc-e92f7d2046a4" class="xr-var-attrs-in" type="checkbox"><label for="attrs-006a4db6-b8a4-48dc-8afc-e92f7d2046a4" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-6cb14b3f-a120-4eb9-bb28-0ef5c47d3d2b" class="xr-var-data-in" type="checkbox"><label for="data-6cb14b3f-a120-4eb9-bb28-0ef5c47d3d2b" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>add_offset :</span></dt><dd>0.0</dd><dt><span>coordinates :</span></dt><dd>time</dd><dt><span>scale_factor :</span></dt><dd>1.0</dd><dt><span>_FillValue :</span></dt><dd>0.0</dd></dl></div><div class="xr-var-data"><pre>[635970 values with dtype=float64]</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>nir08</span></div><div class="xr-var-dims">(band, y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-26db62a7-7360-47ac-a988-7a8804403a77" class="xr-var-attrs-in" type="checkbox"><label for="attrs-26db62a7-7360-47ac-a988-7a8804403a77" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-f66db4ab-9c16-4f8b-b3ff-b68a8f9eee52" class="xr-var-data-in" type="checkbox"><label for="data-f66db4ab-9c16-4f8b-b3ff-b68a8f9eee52" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>add_offset :</span></dt><dd>0.0</dd><dt><span>coordinates :</span></dt><dd>time</dd><dt><span>scale_factor :</span></dt><dd>1.0</dd><dt><span>_FillValue :</span></dt><dd>0.0</dd></dl></div><div class="xr-var-data"><pre>[635970 values with dtype=float64]</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>swir22</span></div><div class="xr-var-dims">(band, y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-8cc4c9b7-a02f-41f9-a078-36128cbd12fa" class="xr-var-attrs-in" type="checkbox"><label for="attrs-8cc4c9b7-a02f-41f9-a078-36128cbd12fa" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-f2ee5f58-dd2d-47bc-9afe-d5c967e1ce4e" class="xr-var-data-in" type="checkbox"><label for="data-f2ee5f58-dd2d-47bc-9afe-d5c967e1ce4e" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>add_offset :</span></dt><dd>0.0</dd><dt><span>coordinates :</span></dt><dd>time</dd><dt><span>scale_factor :</span></dt><dd>1.0</dd><dt><span>_FillValue :</span></dt><dd>0.0</dd></dl></div><div class="xr-var-data"><pre>[635970 values with dtype=float64]</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-c33bf690-4320-4092-ac4c-5fcd3f30cf8b" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-c33bf690-4320-4092-ac4c-5fcd3f30cf8b" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
-</div>
-</div>
-<p>One issue we see is that we have an extra dimension <code>band</code> that is not needed. Let’s remove it!</p>
-<div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># There are 3 dimensions in Landsat let's drop band</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># original dimensions and coordinates</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Original dimensions: </span><span class="sc">{</span>landsat<span class="sc">.</span>dims<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="sc">{</span>landsat<span class="sc">.</span>coords<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove length 1 dimension (band)</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>landsat <span class="op">=</span> landsat.squeeze()</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(landsat.dims, landsat.coords, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># remove coordinates associated to band</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>landsat <span class="op">=</span> landsat.drop(<span class="st">'band'</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(landsat.dims, landsat.coords, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Original dimensions: Frozen({'y': 731, 'x': 870, 'band': 1}) 
-Coordinates:
-  * y            (y) float64 3.952e+06 3.952e+06 ... 3.756e+06 3.755e+06
-  * x            (x) float64 1.213e+05 1.216e+05 ... 3.557e+05 3.559e+05
-  * band         (band) int64 1
-    spatial_ref  int64 0
-Frozen({'y': 731, 'x': 870}) Coordinates:
-  * y            (y) float64 3.952e+06 3.952e+06 ... 3.756e+06 3.755e+06
-  * x            (x) float64 1.213e+05 1.216e+05 ... 3.557e+05 3.559e+05
-    band         int64 1
-    spatial_ref  int64 0 
-
-Frozen({'y': 731, 'x': 870}) Coordinates:
-  * y            (y) float64 3.952e+06 3.952e+06 ... 3.756e+06 3.755e+06
-  * x            (x) float64 1.213e+05 1.216e+05 ... 3.557e+05 3.559e+05
-    spatial_ref  int64 0 
-</code></pre>
-</div>
+<p>The landsat data contains an extra dimension, <code>band</code>, that is not necessary and can cause some issues when plotting. I will remove this dimension.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove length 1 dimension (band)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>landsat <span class="op">=</span> landsat.squeeze()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># remove coordinates associated to band</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>landsat <span class="op">=</span> landsat.drop(<span class="st">'band'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="wildfire-data-preparation" class="level4">
 <h4 class="anchored" data-anchor-id="wildfire-data-preparation">Wildfire Data Preparation</h4>
-<p>Lets explore our Wildfire shapefile and view it’s attributes before data preparation.</p>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View dataframe</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>wildfires.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
-<div>
-
-
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">index</th>
-<th data-quarto-table-cell-role="th">OBJECTID</th>
-<th data-quarto-table-cell-role="th">YEAR_</th>
-<th data-quarto-table-cell-role="th">STATE</th>
-<th data-quarto-table-cell-role="th">AGENCY</th>
-<th data-quarto-table-cell-role="th">UNIT_ID</th>
-<th data-quarto-table-cell-role="th">FIRE_NAME</th>
-<th data-quarto-table-cell-role="th">INC_NUM</th>
-<th data-quarto-table-cell-role="th">ALARM_DATE</th>
-<th data-quarto-table-cell-role="th">CONT_DATE</th>
-<th data-quarto-table-cell-role="th">...</th>
-<th data-quarto-table-cell-role="th">GIS_ACRES</th>
-<th data-quarto-table-cell-role="th">COMMENTS</th>
-<th data-quarto-table-cell-role="th">COMPLEX_NA</th>
-<th data-quarto-table-cell-role="th">COMPLEX_IN</th>
-<th data-quarto-table-cell-role="th">IRWINID</th>
-<th data-quarto-table-cell-role="th">FIRE_NUM</th>
-<th data-quarto-table-cell-role="th">DECADES</th>
-<th data-quarto-table-cell-role="th">SHAPE_Leng</th>
-<th data-quarto-table-cell-role="th">SHAPE_Area</th>
-<th data-quarto-table-cell-role="th">geometry</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>19836</td>
-<td>41429</td>
-<td>2017</td>
-<td>CA</td>
-<td>CCO</td>
-<td>VNC</td>
-<td>BROOK</td>
-<td>00042450</td>
-<td>2017-05-23</td>
-<td>2017-05-24</td>
-<td>...</td>
-<td>10.043819</td>
-<td>per walked track</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>2010</td>
-<td>1246.055781</td>
-<td>59473.666651</td>
-<td>POLYGON ((-13229812.974 4046876.486, -13229786...</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>19837</td>
-<td>41430</td>
-<td>2017</td>
-<td>CA</td>
-<td>CCO</td>
-<td>VNC</td>
-<td>PACIFIC</td>
-<td>00075307</td>
-<td>2017-09-09</td>
-<td>2017-09-09</td>
-<td>...</td>
-<td>1.190109</td>
-<td>Final Walked track. Small spot to the north east</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>2010</td>
-<td>561.418202</td>
-<td>7081.369481</td>
-<td>POLYGON ((-13286872.985 4074523.355, -13286895...</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>19838</td>
-<td>41431</td>
-<td>2017</td>
-<td>CA</td>
-<td>CCO</td>
-<td>VNC</td>
-<td>GRADE</td>
-<td>00054660</td>
-<td>2017-07-04</td>
-<td>2017-07-05</td>
-<td>...</td>
-<td>47.194027</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>2010</td>
-<td>2587.259697</td>
-<td>279911.825212</td>
-<td>POLYGON ((-13244637.580 4056332.530, -13244620...</td>
-</tr>
-</tbody>
-</table>
-
-<p>3 rows × 23 columns</p>
-</div>
-</div>
-</div>
-<p>Lets update the column names to lowercase</p>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make column names lowercase</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>wildfires.columns <span class="op">=</span> wildfires.columns.<span class="bu">str</span>.lower()</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># View our update</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>wildfires.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
-<pre><code>Index(['index', 'objectid', 'year_', 'state', 'agency', 'unit_id', 'fire_name',
-       'inc_num', 'alarm_date', 'cont_date', 'cause', 'c_method', 'objective',
-       'gis_acres', 'comments', 'complex_na', 'complex_in', 'irwinid',
-       'fire_num', 'decades', 'shape_leng', 'shape_area', 'geometry'],
-      dtype='object')</code></pre>
-</div>
-</div>
-<p>A necessary step for plotting the Landsat data and Wildfire data is to make sure they are projected on the same CRS. Let’s check if their CRS are the same, if not let us update them.</p>
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check Wildfires original CRS</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Original CRS check: </span><span class="sc">{</span>wildfires<span class="sc">.</span>crs <span class="op">==</span> landsat<span class="sc">.</span>rio<span class="sc">.</span>crs<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Update wildfire CRS to match Landsar CRS</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>wildfires <span class="op">=</span> wildfires.to_crs(landsat.rio.crs)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check update</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Updated CRS check: </span><span class="sc">{</span>wildfires<span class="sc">.</span>crs <span class="op">==</span> landsat<span class="sc">.</span>rio<span class="sc">.</span>crs<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Original CRS check: False
-Updated CRS check: True</code></pre>
-</div>
+<p>Lets explore our Wildfire shapefile, update the column names, and update the CRS to the landsat CRS.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make column names lowercase</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>wildfires.columns <span class="op">=</span> wildfires.columns.<span class="bu">str</span>.lower()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Update wildfire CRS to match Landsar CRS</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>wildfires <span class="op">=</span> wildfires.to_crs(landsat.rio.crs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -1008,151 +343,118 @@ Updated CRS check: True</code></pre>
 <h2 class="anchored" data-anchor-id="data-selection">Data Selection</h2>
 <section id="santa-barbara" class="level4">
 <h4 class="anchored" data-anchor-id="santa-barbara">Santa Barbara</h4>
-<p>Our current dataframe includes all Counties in the United States. But, we are only interested in Santa Barbara. Let’s filter our dataframe to Santa Barbara County</p>
-<div class="cell" data-tags="[]" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select Santa Barbara</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>aqi_sb <span class="op">=</span> aqi[aqi.county_name <span class="op">==</span> <span class="st">"Santa Barbara"</span>]</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that we only filtered for Santa Barbara by unique county_names</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>aqi_sb.county_name.unique()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
-<pre><code>array(['Santa Barbara'], dtype=object)</code></pre>
-</div>
-</div>
-<p>Now that we filtered our dataset to just Santa Barbara let’s do further analysis on our dataset - view column data types.</p>
-<p>To further update this dataset let us remove the columns we are not interested in, removing <code>state_name</code>,<code>county_name</code>, <code>state_code</code>, <code>county_code</code></p>
-<div class="cell" data-tags="[]" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove state_name, county_name, state_code and county_code columns</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>aqi_sb <span class="op">=</span> aqi_sb.drop(columns <span class="op">=</span> [<span class="st">'state_name'</span>,<span class="st">'county_name'</span>,<span class="st">'state_code'</span>,<span class="st">'county_code'</span>])</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># View remaining columns</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>aqi_sb.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
-<pre><code>Index(['aqi', 'category', 'defining_parameter', 'defining_site',
-       'number_of_sites_reporting'],
-      dtype='object')</code></pre>
-</div>
+<p>Our current dataframe includes all Counties in the United States. But, we are only interested in Santa Barbara. Let’s filter our dataframe to Santa Barbara County and drop unecessary columns.</p>
+<div class="cell" data-tags="[]" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select Santa Barbara</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>aqi_sb <span class="op">=</span> aqi[aqi.county_name <span class="op">==</span> <span class="st">"Santa Barbara"</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that we only filtered for Santa Barbara by unique county_names</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>aqi_sb.county_name.unique()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remove state_name, county_name, state_code and county_code columns</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>aqi_sb <span class="op">=</span> aqi_sb.drop(columns <span class="op">=</span> [<span class="st">'state_name'</span>,<span class="st">'county_name'</span>,<span class="st">'state_code'</span>,<span class="st">'county_code'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="wildfire" class="level4">
 <h4 class="anchored" data-anchor-id="wildfire">Wildfire</h4>
 <p>Our interest is only on the Thomas fire, let us filter our data to only include it.</p>
-<div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We are interested in the THOMAS FIRE</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter dataset to THOMAS FIRE</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>wildfires <span class="op">=</span> wildfires[wildfires.fire_name <span class="op">==</span> <span class="st">'THOMAS'</span>]</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if we have only selected the </span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(wildfires.fire_name.unique())</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># View map of newly filtered data</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>wildfires.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>['THOMAS']</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="15">
-<pre><code>&lt;AxesSubplot:&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="santa_barbara_thomas_fire_files/figure-html/cell-16-output-3.png" class="img-fluid"></p>
-</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We are interested in the THOMAS FIRE</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter dataset to THOMAS FIRE</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>wildfires <span class="op">=</span> wildfires[wildfires.fire_name <span class="op">==</span> <span class="st">'THOMAS'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-</section>
-<section id="geographic-context" class="level2">
-<h2 class="anchored" data-anchor-id="geographic-context">Geographic Context</h2>
-<p>For context, let see where Santa Barbara county is relative to California</p>
-<div class="cell" data-tags="[]" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--------- Import California boundary -----------------------------------------</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>california <span class="op">=</span> gpd.read_file(<span class="st">"data/california_boundary/CA_State_TIGER2016.shp"</span>)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>cali_counties <span class="op">=</span> gpd.read_file(<span class="st">"data/california_counties_boundaries/CA_Counties_TIGER2016.shp"</span>)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -------Filter to Santa Barbara ----------------------------------------------</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>santa_barbara <span class="op">=</span> cali_counties[cali_counties.NAME <span class="op">==</span> <span class="st">"Santa Barbara"</span>]</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------Create Map----------------------------------------------------------</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Santa Barbara County Location in California"</span>)</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>california.plot(ax<span class="op">=</span>ax,color <span class="op">=</span> <span class="st">'bisque'</span>)</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>santa_barbara.plot(ax<span class="op">=</span>ax, color <span class="op">=</span> <span class="st">'plum'</span>, edgecolor <span class="op">=</span> <span class="st">"black"</span>)</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>sb_patch <span class="op">=</span> mpatches.Patch(color <span class="op">=</span> <span class="st">"plum"</span>,</span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>                         label <span class="op">=</span> <span class="st">'Santa Barbara'</span>)</span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>ax.legend(handles <span class="op">=</span> [sb_patch], frameon <span class="op">=</span> <span class="va">False</span>, loc <span class="op">=</span> <span class="st">"lower left"</span>, labelcolor <span class="op">=</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
-<pre><code>&lt;matplotlib.legend.Legend at 0x7f55d5a71c40&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="santa_barbara_thomas_fire_files/figure-html/cell-17-output-2.png" class="img-fluid"></p>
-</div>
-</div>
 </section>
 <section id="data-visualization" class="level2">
 <h2 class="anchored" data-anchor-id="data-visualization">Data Visualization</h2>
 <section id="time-series" class="level3">
 <h3 class="anchored" data-anchor-id="time-series">Time Series</h3>
 <p>To calculate the trend of AQI values we conduct a 5-day rolling average.</p>
-<div class="cell" data-tags="[]" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new column with mean AQI over a 5-day rolling average.</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#aqi_sb["five_day_average"] = aqi_sb.aqi.rolling("5D").mean()</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>aqi_sb[<span class="st">"five_day_average"</span>] <span class="op">=</span> aqi_sb.aqi.rolling(<span class="st">"5D"</span>).mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-tags="[]" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new column with mean AQI over a 5-day rolling average.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#aqi_sb["five_day_average"] = aqi_sb.aqi.rolling("5D").mean()</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>aqi_sb[<span class="st">"five_day_average"</span>] <span class="op">=</span> aqi_sb.aqi.rolling(<span class="st">"5D"</span>).mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we can make a line plot of our time series! Let us compare both the daily AQI and 5-day moving average.</p>
-<div class="cell" data-tags="[]" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define colors for plot</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'thistle'</span>,<span class="st">'firebrick'</span>]</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ------ Plot figure -----------------------------------------------------------------</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># line plot of daily AQI and the 5-day average </span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>aqi_sb.plot(y <span class="op">=</span> [<span class="st">'aqi'</span>,<span class="st">'five_day_average'</span>], <span class="co"># setting y as AQI and 5-day average AQI</span></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>           xlabel <span class="op">=</span> <span class="st">"Date"</span>, <span class="co"># x-axis label</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>           ylabel <span class="op">=</span> <span class="st">"PM2.5 (μm)"</span>, <span class="co">#y-axis label</span></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>           title <span class="op">=</span> <span class="st">"Daily AQI and 5-day average AQI for Santa Barbara"</span>, <span class="co"># title </span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>           color <span class="op">=</span> colors) <span class="co">#setting colors for lines</span></span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="co"># -----Save Figure-----------------------------------------------------------------------</span></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'images/sb_county_aqi.png'</span>,bbox_inches <span class="op">=</span> <span class="st">'tight'</span>,dpi <span class="op">=</span> <span class="dv">100</span>)</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-tags="[]" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define colors for plot</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'thistle'</span>,<span class="st">'firebrick'</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ------ Plot figure -----------------------------------------------------------------</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># line plot of daily AQI and the 5-day average </span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>aqi_sb.plot(y <span class="op">=</span> [<span class="st">'aqi'</span>,<span class="st">'five_day_average'</span>], <span class="co"># setting y as AQI and 5-day average AQI</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>           xlabel <span class="op">=</span> <span class="st">"Date"</span>, <span class="co"># x-axis label</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>           ylabel <span class="op">=</span> <span class="st">"PM2.5 (μm)"</span>, <span class="co">#y-axis label</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>           title <span class="op">=</span> <span class="st">"Daily AQI and 5-day average AQI for Santa Barbara"</span>, <span class="co"># title </span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>           color <span class="op">=</span> colors) <span class="co">#setting colors for lines</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># -----Save Figure-----------------------------------------------------------------------</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'images/sb_county_aqi.png'</span>,bbox_inches <span class="op">=</span> <span class="st">'tight'</span>,dpi <span class="op">=</span> <span class="dv">100</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="santa_barbara_thomas_fire_files/figure-html/cell-19-output-1.png" class="img-fluid"></p>
+<p><img src="santa_barbara_thomas_fire_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
 </div>
 </div>
+<p>We see that Daily AQI peaks around December which is on par with when the Thomas Fire (December 4 - March 22) occured. An interesting thing to note is that the peak AQI was reached right at the start of the fire and eventually returned to the average AQI after January, even though the fire did not stop till March.</p>
 </section>
 <section id="map-of-fire-scar" class="level3">
 <h3 class="anchored" data-anchor-id="map-of-fire-scar">Map of Fire Scar</h3>
-<p>For our map of fire scar in Santa Barbara we can the Thomas Fire scar on top of the Santa Barbara raster. Our map will have:</p>
-<ul>
-<li>a legend indicating the area of the Thomas fire scar</li>
-<li>false color image</li>
-<li>title</li>
-<li>no axis</li>
-</ul>
-<div class="cell" data-tags="[]" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Wildfire and Landsat data together</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ---Landsat Map------------------------------------------------------------------------------------------------------------</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we are plotting with false color image by plotting the short-waved infared (swir22), near-infared, and red variable</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># False color imaging allows us to differentiate the Thomas fire scar from the rest of the Santa Barbara area</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>landsat[[<span class="st">'swir22'</span>,<span class="st">'nir08'</span>,<span class="st">'red'</span>]].to_array().plot.imshow(ax<span class="op">=</span>ax,robust <span class="op">=</span> <span class="va">True</span>)</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>ax.set_facecolor(<span class="st">'white'</span>)</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">#---Thomas Fire Layer-------------------------------------------------------------------------------------------------------</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>wildfires.plot(ax<span class="op">=</span>ax, color <span class="op">=</span> <span class="st">'none'</span>, edgecolor <span class="op">=</span> <span class="st">"yellow"</span>, linewidth <span class="op">=</span> <span class="dv">1</span>)</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>wildfires_patch <span class="op">=</span> mpatches.Patch(color <span class="op">=</span> <span class="st">'yellow'</span>,</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>                                label <span class="op">=</span> <span class="st">'Thomas fire perimeter'</span>)</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ---Legend-----------------------------------------------------------------------------------------------------------------</span></span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Fire scar of Thomas Fire, 2017"</span>) <span class="co"># title</span></span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>ax.legend(handles <span class="op">=</span> [wildfires_patch], frameon <span class="op">=</span> <span class="va">False</span>, loc <span class="op">=</span> <span class="st">"upper right"</span>, labelcolor <span class="op">=</span> <span class="st">"white"</span>)</span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="co"># ------Save Image----------------------------------------------------------------------------------------------------------</span></span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'../EDS220-Task3-Presentation-Ready/images/sb_thomas_fire_2017.png'</span>,bbox_inches <span class="op">=</span> <span class="st">'tight'</span>,dpi <span class="op">=</span> <span class="dv">100</span>)</span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>plt.show() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>I can now map the Thomas Fire scar on top of the Santa Barbara raster.</p>
+<div class="cell" data-tags="[]" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Wildfire and Landsat data together</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ---Landsat Map------------------------------------------------------------------------------------------------------------</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we are plotting with false color image by plotting the short-waved infared (swir22), near-infared, and red variable</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># False color imaging allows us to differentiate the Thomas fire scar from the rest of the Santa Barbara area</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>landsat[[<span class="st">'swir22'</span>,<span class="st">'nir08'</span>,<span class="st">'red'</span>]].to_array().plot.imshow(ax<span class="op">=</span>ax,robust <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>ax.set_facecolor(<span class="st">'white'</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#---Thomas Fire Layer-------------------------------------------------------------------------------------------------------</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>wildfires.plot(ax<span class="op">=</span>ax, color <span class="op">=</span> <span class="st">'none'</span>, edgecolor <span class="op">=</span> <span class="st">"yellow"</span>, linewidth <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>wildfires_patch <span class="op">=</span> mpatches.Patch(color <span class="op">=</span> <span class="st">'yellow'</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                                label <span class="op">=</span> <span class="st">'Thomas fire perimeter'</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ---Legend-----------------------------------------------------------------------------------------------------------------</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Fire scar of Thomas Fire, 2017"</span>) <span class="co"># title</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>ax.legend(handles <span class="op">=</span> [wildfires_patch], frameon <span class="op">=</span> <span class="va">False</span>, loc <span class="op">=</span> <span class="st">"upper right"</span>, labelcolor <span class="op">=</span> <span class="st">"white"</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co"># ------Save Image----------------------------------------------------------------------------------------------------------</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'images/sb_thomas_fire_2017.png'</span>,bbox_inches <span class="op">=</span> <span class="st">'tight'</span>,dpi <span class="op">=</span> <span class="dv">100</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>plt.show() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="santa_barbara_thomas_fire_files/figure-html/cell-20-output-1.png" class="img-fluid"></p>
+<p><img src="santa_barbara_thomas_fire_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
 </div>
+</div>
+<p>Based on the map we can see that Thomas Fire heavily affected Ventura and Ojai.</p>
+<p><em>Code for making Geographic context</em></p>
+<div class="cell" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tags"</span>: [</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"hide-cell"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#--------- Import California boundary -----------------------------------------</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>california <span class="op">=</span> gpd.read_file(<span class="st">"data/california_boundary/CA_State_TIGER2016.shp"</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>cali_counties <span class="op">=</span> gpd.read_file(<span class="st">"data/california_counties_boundaries/CA_Counties_TIGER2016.shp"</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># -------Filter to Santa Barbara ----------------------------------------------</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>santa_barbara <span class="op">=</span> cali_counties[cali_counties.NAME <span class="op">==</span> <span class="st">"Santa Barbara"</span>]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------Create Map----------------------------------------------------------</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Santa Barbara County Location in California"</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>california.plot(ax<span class="op">=</span>ax,color <span class="op">=</span> <span class="st">'bisque'</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>santa_barbara.plot(ax<span class="op">=</span>ax, color <span class="op">=</span> <span class="st">'plum'</span>, edgecolor <span class="op">=</span> <span class="st">"black"</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>sb_patch <span class="op">=</span> mpatches.Patch(color <span class="op">=</span> <span class="st">"plum"</span>,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>                         label <span class="op">=</span> <span class="st">'Santa Barbara'</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>ax.legend(handles <span class="op">=</span> [sb_patch], frameon <span class="op">=</span> <span class="va">False</span>, loc <span class="op">=</span> <span class="st">"lower left"</span>, labelcolor <span class="op">=</span> <span class="st">"black"</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'../Santa-Barbara-Thomas-Fire/images/sb_ca.png'</span>,bbox_inches <span class="op">=</span> <span class="st">'tight'</span>,dpi <span class="op">=</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -1161,13 +463,14 @@ Updated CRS check: True</code></pre>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{vaquero,
   author = {Vaquero, Hazel},
-  title = {Santa {Barbara} 2021 {Thomas} {Fire} {AQI} and Fire Scar},
+  title = {2021 {Thomas} {Fire} {Air} {Quality} {Index} and {Fire}
+    {Scar} {Analysis}},
   url = {https://hazelvaq.github.io/blog/2023-12-23-SB-Thomas-Fire/},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-vaquero" class="csl-entry quarto-appendix-citeas" role="listitem">
-Vaquero, Hazel. n.d. <span>“Santa Barbara 2021 Thomas Fire AQI and Fire
-Scar.”</span> <a href="https://hazelvaq.github.io/blog/2023-12-23-SB-Thomas-Fire/">https://hazelvaq.github.io/blog/2023-12-23-SB-Thomas-Fire/</a>.
+Vaquero, Hazel. n.d. <span>“2021 Thomas Fire Air Quality Index and Fire
+Scar Analysis.”</span> <a href="https://hazelvaq.github.io/blog/2023-12-23-SB-Thomas-Fire/">https://hazelvaq.github.io/blog/2023-12-23-SB-Thomas-Fire/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
