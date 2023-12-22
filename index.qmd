@@ -3,7 +3,7 @@ image: hazel.jpg
 toc: false
 about:
   template: trestles
-  image-shape: round
+  image-shape: rectangle
   image-width: 18em
   links: 
     - text: LinkedIn
