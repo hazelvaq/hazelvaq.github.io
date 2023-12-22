@@ -17,7 +17,7 @@ format:
   html:
     theme: 
       - styles.scss
-    mainfont: Afacad
+    mainfont: Alegreya
     toc: true
     page-layout: full
 

@@ -1,10 +1,9 @@
 ---
-title: "Hazel Vaquero"
 image: hazel.jpg
 toc: false
 about:
   template: trestles
-  image-shape: rectangle
+  image-shape: round
   image-width: 20em
   links: 
     - text: LinkedIn
@@ -16,11 +15,10 @@ about:
     - text: Email
       href: mailto::hazelvaquero@ucsb.edu
 ---
+# Welcome!
+My name is Hazel Vaquero, I am a current graduate students at UC Santa Barbara working towards a masters in Environmental Data Science.  
 
-## Education:
-
+# Education:
 University of California, Santa Barbara (June 2024): MEDS Environmental Data Science 
 
 The City College of New York(2022): BE Earth System Science and Environmental Engineering 
-
-## Experience:
