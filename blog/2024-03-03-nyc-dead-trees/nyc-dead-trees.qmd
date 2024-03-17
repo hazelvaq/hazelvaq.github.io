@@ -342,7 +342,6 @@ p2 <- ggplot() +
 
 p2
 
-ggsave("plots/trees_street.png")
 ```
 
 ## Dead Trees Diameter Distribution
