@@ -40,7 +40,7 @@ The variables of interest were:
 -   `health`: Volunteer's perception of tree health
 -   `tree_dbh`: Diameter of tree measured at approximately 54 inches above the ground
 -   `stump_diam`: Diameter of stump
--   `borough`: Name of borough tree
+-   `borough`: Name of borough
 -   `nta_name`: Name of neighborhood
 
 Additional data sources used for geospatial analysis is the [2010 Neighborhood Tabulation Areas (NTAs)](https://data.cityofnewyork.us/City-Government/2010-Neighborhood-Tabulation-Areas-NTAs-/cpf4-rkhq).
