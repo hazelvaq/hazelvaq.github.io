@@ -1,4 +1,403 @@
 ---
 title: "Visualizing NYC Dead Street Trees"
-author: "Hazel Vaquero"
+author: 
+  - name: Hazel Vaquero
+    url: https://hazelvaq.github.io/ 
+    #orcid: 0
+    affiliation: Bren School of Environmental Science & Management at UC Santa Barbara
+    affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science/academics-meds
+published: 03-16-2023
+categories: [R, Infographic, Data Visualization]
+citation: 
+  url: https://hazelvaq.github.io/blog/2024-03-03-nyc-dead-trees
+format: 
+  html: 
+    code-fold: true
+    toc: true
+image: ""
+draft: false
 ---
+
+
+# Purpose
+
+In this blog I will show the steps I took to create an infographic analyzing New York City's (NYC) street trees. My over arching question is **Are dead street trees an alarming concern for NYC?** 
+
+To answer this question I will be answering the following subset of questions:
+
+1. What are the street trees health status?
+
+2. What neighborhood requires the most street tree rehabilitation?
+
+3. Are younger trees experiencing higher morality?
+
+# Data description
+
+The data for this infographic was obtained from the [NYC Department of Parks and Recreating OpenData](https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/uvpi-gqnh/about_data). It contains street tree data recorded from their 2015 Street Tree Census citizen science project, TreesCount! Volunteers reported 666,134 trees with 45 variables. 
+
+The variables of interest were:
+
+- `status`: Indicates whether a tree is alive, standing dead, or a stump
+- `health`: Volunteer's perception of tree health
+- `tree_dbh`: Diameter of tree measured at approximately 54 inches above the ground
+- `stump_diam`: Diameter of stump
+- `borough`: Name of borough tree 
+- `nta_name`: Name of neighborhood 
+
+Additional data sources used for geospatial analysis is the [2010 Neighborhood Tabulation Areas (NTAs)](https://data.cityofnewyork.us/City-Government/2010-Neighborhood-Tabulation-Areas-NTAs-/cpf4-rkhq).
+
+### Data Assumptions & Quality
+
+Before delving into the data visualization code, it's important to acknowledge the assumptions made during the statistical analysis. One major assumption is considering trees reported as 'stumps' as dead trees. Additionally, it's assumed that volunteers were adequately trained in dendrology to identify tree species and determine their health status accurately. However, this reliance on volunteers introduces concerns about data quality, as subjective judgments may lead to errors. This is particularly evident when working with reported tree diameters (`tree_dbh`). For instance, the recorded diameter of the largest dead tree is 450 inches. As a long-term resident of NYC, I've never encountered a street tree to be comparably as large as a mature redwood. The NYC Parks and Recreating own highlights [report](https://www.nycgovparks.org/trees/treescount) of the census project states the largest street tree recorded that year was 87 inches. For the last question when working with street tree diameter I included them as a part of anything greater than 40 inches in diameter. There was only roughly 300 of trees reported in this matter but I still felt the need to include them as there is no way to test the accuracy without reaching out to the NYC Parks and Recreation.  
+
+
+# Data Visualization
+
+To answer my three questions I developed three visualizations.
+
+I created two color palettes. One is for the treemap in my first question and the second is for the street tree frequency visualization.
+
+```{r, include = FALSE}
+# Import libraries
+
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(here)
+library(janitor)
+library(sf)
+library(jsonlite)
+library(treemap)
+library(osmdata)
+library(sf)
+library(ggmap)
+library(ggpubr)
+library(treemap)
+library(showtext)
+library(gt)
+library(leaflet)
+```
+
+```{r}
+# Set color palette and font
+tree_map <- c(
+  "Good" = "#46a312",
+  "Fair" = "#869F3B",
+  "Poor" = "#CFBB59",
+  "Dead" = "#6F4229"
+)
+
+# Tree palette
+tree_palette <- c(
+  "dead" = "#6F4229",
+  "alive" = "#69cf6d",
+  "fill_grey" = "grey95",
+  "title" = "#66702D"
+)
+
+# Add Alegreya font
+font_add_google(name = "Alegreya", family = "alegreya")
+```
+
+
+## NYC Health Status Treemap
+
+Since this dataset is about trees I had to use the `treemap` function for the first question. I was interested in getting an overall idea of the health status of the street trees across the 5 boroughs. The health status of the trees reported were subjective and based on the volunteers. They were categorized as good, fair, poor, and dead.   
+
+I first grouped them by borough and summarized the number of trees in each health category. The next step required me to rearrange the format of my dataframe to prep it for the `treemap` package.
+
+```{r, include = FALSE}
+# Read in 2015 NYC Street Tree Census data 
+nyc_trees <- st_read("~/MEDS_FOLDER/hazelvaq.github.io/data/tree_data/geo_export_145e1dbe-8d16-4451-aa07-a8915754603a.shp")
+
+# Read in NYC boundary
+nyc_boundary <- st_read("~/MEDS_FOLDER/hazelvaq.github.io/data/nyc_boundary/geo_export_cba87a71-9b4b-45bc-9ca2-8cd5cf2eabdb.shp")
+```
+
+```{r, message=FALSE, warning=FALSE}
+# First Visualization ----
+# Treemap
+
+# Prepare data for treemap format
+bstatus <- nyc_trees %>% 
+  select(boroname, health) %>% 
+  group_by(health,boroname) %>% 
+  summarise(count = n()) %>% 
+  st_drop_geometry() %>% 
+  mutate(health = replace_na(health, "Dead")) %>% 
+  mutate(colors = ifelse(health %in% names(tree_map), tree_map[health],NA))
+
+# Treemap of NYC street tree health status
+treemap(bstatus,
+        index = c("boroname", "health"), 
+        vSize = "count",
+        type = "color",
+        vColor = "colors", 
+        fontsize.labels = c(12,9.5),
+        labels = FALSE,
+        bg.labels = 0,
+        border.col = "white",
+        border.lwds = 1.5,
+        fontcolor.labels = "white",
+        align.labels = list(c("center","center"),c("left","top")),
+        force.print.labels = TRUE,
+        title = "NYC Street Tree Health Status",
+        fontfamily.title = "alegreya"
+        ) 
+
+```
+Additional edits to the treemap were done in Canva to add black borders over each borough. 
+
+## Neighborhood with the most dead trees map
+
+The first part of this visualization is determine what borough has the highest amount of dead trees.
+
+*Data Preparation* 
+
+```{r, message=FALSE, warning=FALSE}
+# Borough dead and stump tree count
+boro <- nyc_trees %>% 
+  filter(status == "Dead" | status == "Stump") %>% 
+  group_by(boroname) %>% 
+  summarize(dead = n()) %>% 
+  st_drop_geometry()
+
+
+# Borough alive trees count
+boro1 <- nyc_trees %>% 
+  filter(status == "Alive") %>% 
+  group_by(boroname) %>% 
+  summarize(alive = n()) %>% 
+  st_drop_geometry()
+
+# Merge
+boro_merge <- merge(boro, boro1)
+
+# Percent of dead trees
+# Bronx determined as having the highest percentage
+boro_merge <- boro_merge %>% 
+  mutate(ratio = dead/alive)
+ 
+gt(boro_merge %>% 
+     mutate("percent" = round(ratio *100 ,3)) %>% 
+     select(-ratio) %>% 
+     arrange(desc(percent))) %>% 
+  tab_header(title = "Percent of dead street trees across the 5 Boroughs, NYC")
+
+```
+
+The Bronx is identified as the the borough with the highest percentage of dead tree. Then to further analyze I determined what neighborhood in the Bronx has the highest percentage of dead trees. 
+
+```{r}
+### Neighborhood in the Bronx with highest amount of dead tree
+bronx_neigh_dead <- nyc_trees %>% 
+  filter(boroname == "Bronx") %>% 
+  filter(status == "Dead" |
+           status == "Stump") %>% 
+  filter(boroname == "Bronx") %>% 
+  group_by(nta_name) %>% 
+  summarise(dead = n()) %>% 
+  st_drop_geometry()
+  
+
+# Count number of alive trees by neighborhood in the Bronx
+bronx_neigh_alive <- nyc_trees %>% 
+  filter(boroname == "Bronx") %>% 
+  filter(status == "Alive") %>% 
+  group_by(nta_name) %>% 
+  summarise(alive = n()) %>% 
+  st_drop_geometry()
+
+# Determine the percent of dead trees by neighborhoods
+# Bronxdale identified as the highest percentage
+bronx <- merge(bronx_neigh_dead, bronx_neigh_alive) %>% 
+  mutate(ratio = (round(dead/alive, 3))) %>% 
+  rename(ntaname = nta_name)
+
+gt(head(bronx %>% 
+    mutate("percent" = round(ratio*100,3)) %>%
+    select(-ratio) %>% 
+      arrange(desc(percent)),5 )) %>% 
+  tab_header(title = "Top 5 Bronx Neighborhoods with the highest percent of dead street trees")
+
+```
+Bronxdale was identified as the neighborhood in the Bronx with the highest percent of dead trees.
+
+
+Next I prepped the boundary for Bronxdale neighborhood. 
+
+```{r, message=FALSE, warning=FALSE}
+# BRONX boundary
+bronx_bounds <- nyc_boundary %>% 
+  filter(boro_name == "Bronx")
+
+# Check CRS
+#st_crs(bronx_bounds) == st_crs(nyc_trees)
+
+# Bronxdale
+bronxdale <- bronx_bounds %>% 
+  filter(ntaname == "Bronxdale")
+
+# Dead Trees in the Bronx
+bronx_dead <- nyc_trees %>% 
+  filter(boroname == "Bronx") %>% 
+  filter(status %in% c("Dead", "Stump"))
+
+# Remove neighborhood boundaries and have full Bronx shape
+bronx <- st_union(bronx_bounds)
+
+# Highlight were Bronxdale is located
+leaflet() %>% 
+  addTiles() %>% 
+  addProviderTiles(providers$CartoDB) %>% 
+  addPolygons(data = bronx, color = "black",
+              fillColor = NA,
+              opacity = 0.8, weight = 1) %>% 
+  addPolygons(data = bronxdale, color = "red")
+
+```
+I was able to calculate the frequency of dead street trees for each street by creating a buffer around the streets. Any tree that fell within that buffer was countes as a part of that street. 
+
+```{r}
+## Load in Highways and roads in Bronxdale ----
+bush_roads_raw <- 
+  st_bbox(bronxdale) %>%
+  opq() %>%
+  add_osm_feature("highway") %>%
+  osmdata_sf()
+
+
+bush_outline <- 
+  bronxdale %>%
+  st_simplify() %>%
+  st_union() %>%
+  st_buffer(dist = 0.001)
+
+
+bush_roads <- 
+  bush_roads_raw$osm_lines %>%
+  st_transform(st_crs(bronxdale)) %>%
+  st_crop(st_bbox(bronxdale)) %>% 
+  st_transform(3488) ## transform to meters
+
+# CRS transforms ----
+bush_roads <- st_transform(bush_roads, crs = st_crs(bronxdale))
+
+bush_roads_buffer <- 
+  bush_roads %>% 
+  st_buffer(dist = 20, endCapStyle = "FLAT")
+
+
+bush_roads_buffer <- st_transform(bush_roads_buffer, crs = st_crs(bronxdale))
+bronx_dead <- st_transform(bronx_dead, crs = st_crs(bronxdale))
+
+
+
+sf_roads_trees <- bush_roads %>% 
+  mutate(
+    length = as.numeric(st_length(.)),
+    tree_count = lengths(st_intersects(bush_roads_buffer, bronx_dead))
+  ) 
+
+# Clip frequency of trees to Bronxdale 
+bbbb <- st_intersection(bronxdale, sf_roads_trees)
+
+
+# Zero streets
+zero_streets <- bbbb %>% 
+  filter(tree_count == 0)
+
+# Count of trees on streets
+tree_streets <- bbbb %>% 
+  filter(tree_count != 0)
+
+
+
+
+
+# Map of streets
+p2 <- ggplot() +
+  geom_sf(data = bronxdale, lwd = 0.5, color = "black", fill = tree_palette["fill_grey"]) +
+  geom_sf(data = bbbb,
+          aes(color = tree_count),
+          lwd = 1) +
+  scale_color_gradient2(low = "white", 
+                        mid = tree_palette["alive"],
+                        high = tree_palette["dead"], 
+                       na.value = NA,
+                       name = "Dead Trees Frequency",
+                       breaks = c(0, 5, 10, 15, 20),
+                       limits = c(0,20)) +
+  labs(title = stringr::str_wrap("Streets in Bronxdale, Bronx that require the most street tree rehabilitation")) +
+  theme_void() +
+  theme(plot.title = element_text(family = "alegreya", 
+                                  size = 20, face = "bold"),
+        legend.text = element_text(family = "alegreya",
+                                   size = 20),
+        legend.title = element_text(family = "alegraya",
+                                    size = 20)) 
+
+p2
+```
+
+## Dead Trees Diameter Distribution
+
+```{r}
+# Analyzing the distribution of trunk diameter of dead trees ---
+
+# Filter to Dead and Stump classified trees 
+dead_trees <- nyc_trees %>% 
+  filter(status %in% c("Dead","Stump")) %>% 
+  select(status, tree_dbh, stump_diam)
+
+# Set diameter of tree in a new column
+d <- dead_trees %>% 
+  mutate(diam = ifelse(tree_dbh == 0, stump_diam, tree_dbh))
+
+# Drop geometry
+d1 <- d %>% select(diam) %>% 
+  st_drop_geometry()
+
+# View the distribution of the diameters
+summary(d1)
+
+
+# Set the breaks for the diameter ranges
+diameters <- d1 %>% 
+  filter(!is.na(diam)) %>%
+  mutate(range = cut(diam, breaks = c(0, 10, 20, 30, 40, Inf),
+                      labels = c("0 - 10 (in)", "10 - 20 (in)", "20 - 30 (in)", "30 - 40 (in)", "40 + (in)"),
+                      include.lowest = TRUE)) %>% 
+  group_by(range) %>% 
+  summarise(count = n()) %>% 
+  # determine percentage of dead trees in the selected ranges
+  mutate(total = nrow(d1),
+         percent = count/total) %>% 
+  mutate(r = 10-(0.58706310 - percent)*10) %>% 
+  # Set x and y positions for plotting
+  mutate(x0 = seq(-60, 40, length.out = 5),
+    y0 = 10)
+
+
+# Plotting
+p3 <- ggplot(data = diameters) +
+  geom_circle(aes(x0 = x0, y0 = y0, r = r), fill = tree_palette["dead"]) +
+  geom_text(aes(x = x0, y = y0, label = scales::percent(percent)),
+            color = "white", size = 5, fontface = "bold") +
+  geom_text(aes(x = x0, y = -3, label = range), color = "black", size = 5, fontface = "bold") +
+  theme(text = element_text(family = "alegreya")) +
+  theme_void() +
+  coord_fixed()
+
+p3
+
+# Save plot
+# ggsave("plots/p3.png", bg = "transparent",width = 15, height = 10)
+
+```
+
+
+# Design Elements
+
+# Infographic
+
