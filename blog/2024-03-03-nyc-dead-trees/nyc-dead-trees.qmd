@@ -320,7 +320,7 @@ p2 <- ggplot() +
   geom_sf(data = bronxdale, lwd = 0.5, color = "black", fill = tree_palette["fill_grey"]) +
   geom_sf(data = bbbb,
           aes(color = tree_count),
-          lwd = 1) +
+          lwd = 2.5) +
   scale_color_gradient2(low = "white", 
                         mid = tree_palette["alive"],
                         high = tree_palette["dead"], 
