@@ -18,38 +18,36 @@ image: ""
 draft: false
 ---
 
-
 # Purpose
 
-In this blog I will show the steps I took to create an infographic analyzing New York City's (NYC) street trees. My over arching question is **Are dead street trees an alarming concern for NYC?** 
+In this blog I will show the steps I took to create an infographic analyzing New York City's (NYC) street trees. My over arching question is **Are dead street trees an alarming concern for NYC?**
 
 To answer this question I will be answering the following subset of questions:
 
-1. What are the street trees health status?
+1.  What are the street trees health status?
 
-2. What neighborhood requires the most street tree rehabilitation?
+2.  What neighborhood requires the most street tree rehabilitation?
 
-3. Are younger trees experiencing higher morality?
+3.  Are younger trees experiencing higher morality?
 
 # Data description
 
-The data for this infographic was obtained from the [NYC Department of Parks and Recreating OpenData](https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/uvpi-gqnh/about_data). It contains street tree data recorded from their 2015 Street Tree Census citizen science project, TreesCount! Volunteers reported 666,134 trees with 45 variables. 
+The data for this infographic was obtained from the [NYC Department of Parks and Recreating OpenData](https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/uvpi-gqnh/about_data). It contains street tree data recorded from their 2015 Street Tree Census citizen science project, TreesCount! Volunteers reported 666,134 trees with 45 variables.
 
 The variables of interest were:
 
-- `status`: Indicates whether a tree is alive, standing dead, or a stump
-- `health`: Volunteer's perception of tree health
-- `tree_dbh`: Diameter of tree measured at approximately 54 inches above the ground
-- `stump_diam`: Diameter of stump
-- `borough`: Name of borough tree 
-- `nta_name`: Name of neighborhood 
+-   `status`: Indicates whether a tree is alive, standing dead, or a stump
+-   `health`: Volunteer's perception of tree health
+-   `tree_dbh`: Diameter of tree measured at approximately 54 inches above the ground
+-   `stump_diam`: Diameter of stump
+-   `borough`: Name of borough tree
+-   `nta_name`: Name of neighborhood
 
 Additional data sources used for geospatial analysis is the [2010 Neighborhood Tabulation Areas (NTAs)](https://data.cityofnewyork.us/City-Government/2010-Neighborhood-Tabulation-Areas-NTAs-/cpf4-rkhq).
 
 ### Data Assumptions & Quality
 
-Before delving into the data visualization code, it's important to acknowledge the assumptions made during the statistical analysis. One major assumption is considering trees reported as 'stumps' as dead trees. Additionally, it's assumed that volunteers were adequately trained in dendrology to identify tree species and determine their health status accurately. However, this reliance on volunteers introduces concerns about data quality, as subjective judgments may lead to errors. This is particularly evident when working with reported tree diameters (`tree_dbh`). For instance, the recorded diameter of the largest dead tree is 450 inches. As a long-term resident of NYC, I've never encountered a street tree to be comparably as large as a mature redwood. The NYC Parks and Recreating own highlights [report](https://www.nycgovparks.org/trees/treescount) of the census project states the largest street tree recorded that year was 87 inches. For the last question when working with street tree diameter I included them as a part of anything greater than 40 inches in diameter. There was only roughly 300 of trees reported in this matter but I still felt the need to include them as there is no way to test the accuracy without reaching out to the NYC Parks and Recreation.  
-
+Before delving into the data visualization code, it's important to acknowledge the assumptions made during the statistical analysis. One major assumption is considering trees reported as 'stumps' as dead trees. Additionally, it's assumed that volunteers were adequately trained in dendrology to identify tree species and determine their health status accurately. However, this reliance on volunteers introduces concerns about data quality, as subjective judgments may lead to errors. This is particularly evident when working with reported tree diameters (`tree_dbh`). For instance, the recorded diameter of the largest dead tree is 450 inches. As a long-term resident of NYC, I've never encountered a street tree to be comparably as large as a mature redwood. The NYC Parks and Recreating own highlights [report](https://www.nycgovparks.org/trees/treescount) of the census project states the largest street tree recorded that year was 87 inches. For the last question when working with street tree diameter I included them as a part of anything greater than 40 inches in diameter. There was only roughly 300 of trees reported in this matter but I still felt the need to include them as there is no way to test the accuracy without reaching out to the NYC Parks and Recreation.
 
 # Data Visualization
 
@@ -100,10 +98,9 @@ tree_palette <- c(
 font_add_google(name = "Alegreya", family = "alegreya")
 ```
 
-
 ## NYC Health Status Treemap
 
-Since this dataset is about trees I had to use the `treemap` function for the first question. I was interested in getting an overall idea of the health status of the street trees across the 5 boroughs. The health status of the trees reported were subjective and based on the volunteers. They were categorized as good, fair, poor, and dead.   
+Since this dataset is about trees I had to use the `treemap` function for the first question. I was interested in getting an overall idea of the health status of the street trees across the 5 boroughs. The health status of the trees reported were subjective and based on the volunteers. They were categorized as good, fair, poor, and dead.
 
 I first grouped them by borough and summarized the number of trees in each health category. The next step required me to rearrange the format of my dataframe to prep it for the `treemap` package.
 
@@ -147,13 +144,14 @@ treemap(bstatus,
         ) 
 
 ```
-Additional edits to the treemap were done in Canva to add black borders over each borough. 
+
+Additional edits to the treemap were done in Canva to add black borders over each borough.
 
 ## Neighborhood with the most dead trees map
 
 The first part of this visualization is determine what borough has the highest amount of dead trees.
 
-*Data Preparation* 
+*Data Preparation*
 
 ```{r, message=FALSE, warning=FALSE, fig.alt= "Table of NYC 5 borought total percent of dead trees. Bronx identified as the borough with the highest percent of dead tree"}
 # Borough dead and stump tree count
@@ -187,7 +185,7 @@ gt(boro_merge %>%
 
 ```
 
-The Bronx is identified as the the borough with the highest percentage of dead tree. Then to further analyze I determined what neighborhood in the Bronx has the highest percentage of dead trees. 
+The Bronx is identified as the the borough with the highest percentage of dead tree. Then to further analyze I determined what neighborhood in the Bronx has the highest percentage of dead trees.
 
 ```{r, fig.alt= "Table of the top 5 neighborhoods in the Bronx with the highest percent of dead trees. Bronxdale identified as the highest"}
 ### Neighborhood in the Bronx with highest amount of dead tree
@@ -222,10 +220,10 @@ gt(head(bronx %>%
   tab_header(title = "Top 5 Bronx Neighborhoods with the highest percent of dead street trees")
 
 ```
+
 Bronxdale was identified as the neighborhood in the Bronx with the highest percent of dead trees.
 
-
-Next I prepped the boundary for Bronxdale neighborhood. 
+Next I prepped the boundary for Bronxdale neighborhood.
 
 ```{r, message=FALSE, warning=FALSE, fig.alt= "Map of the Bronx, New York with the neighborhood Bronxdale highlighted in red"}
 # BRONX boundary
@@ -257,7 +255,8 @@ leaflet() %>%
   addPolygons(data = bronxdale, color = "red")
 
 ```
-I was able to calculate the frequency of dead street trees for each street by creating a buffer around the streets. Any tree that fell within that buffer was countes as a part of that street. 
+
+I was able to calculate the frequency of dead street trees for each street by creating a buffer around the streets. Any tree that fell within that buffer was countes as a part of that street.
 
 ```{r, fig.alt= "Streets in Bronxdale, Bronx, New York mapping dead street tree frequency. Bronx Park East the street with the most dead trees at 19 dead trees."}
 ## Load in Highways and roads in Bronxdale ----
@@ -347,7 +346,7 @@ ggsave("plots/trees_street.png")
 
 ## Dead Trees Diameter Distribution
 
-The third question was answered by developing a visualization of tree trunk diameter for all reported dead trees is NYC. I initially graphed the distribution as a histogram to get a general idea of the distribution of the diameter. It was heavily skewed to the left with a majority of reported diameters being less than 10 inches. My approach was to set diameter ranges and determine how many trees fell within each range and then calculated the percent of trees in each range. Starting from 10, I increase in increments of 10 up to 40 inches. The idea behind this visualization was to make circles relative to the percentage of trees in the range. I wanted them to be circular to represent tree stumps and then through Canva I overlayed a tree ring design to each circle.  
+The third question was answered by developing a visualization of tree trunk diameter for all reported dead trees is NYC. I initially graphed the distribution as a histogram to get a general idea of the distribution of the diameter. It was heavily skewed to the left with a majority of reported diameters being less than 10 inches. My approach was to set diameter ranges and determine how many trees fell within each range and then calculated the percent of trees in each range. Starting from 10, I increase in increments of 10 up to 40 inches. The idea behind this visualization was to make circles relative to the percentage of trees in the range. I wanted them to be circular to represent tree stumps and then through Canva I overlayed a tree ring design to each circle.
 
 ```{r, fig.alt= "Varying circles displaying the percentage of dead street trees in diameter ranges (0-10,10-20,30-40,40+ inches). 58% of the dead trees fall in the 0-10 inches range "}
 # Analyzing the distribution of trunk diameter of dead trees ---
@@ -399,26 +398,26 @@ ggsave("plots/tree_diameter.png", bg = "transparent",width = 15, height = 10)
 
 ```
 
-About 59% of the dead trees have a diameter between 0-10 inches. This is a bit concerning because this tells us younger trees are dying the most. They are not surviving past a certain age and this is something the NYC Parks and Recreation should consider investigating. 
-# Design Elements
+About 59% of the dead trees have a diameter between 0-10 inches. This is a bit concerning because this tells us younger trees are dying the most. They are not surviving past a certain age and this is something the NYC Parks and Recreation should consider investigating.
+
+##  Design Elements
 
 The design elements of this infographic were chosen carefully and took into consideration the following factors:
 
 Text: The final graph, tree diameter, did not have a title coded in `ggplot` because I had difficulty getting it to align and be the right size. So I added the title for this graph in Canva. The captions and subtitles were also added through Canva as I found it difficult to align it how I would have liked in R.
 
-Themes: I removed grid lines and grid boxes for all of my the plots to have a simple clean background. I added a beige color background to the final infographic to contrast the green and brown in my color theme. 
+Themes: I removed grid lines and grid boxes for all of my the plots to have a simple clean background. I added a beige color background to the final infographic to contrast the green and brown in my color theme.
 
 Colors: I created two palettes and are in the first code chunk in this blog post. I wanted to stick to a tree color theme and my main colors are brown and green. I stuck to colors within that range when creating the treemap. I wanted the emphasis to be solely on the dead tree section and not the different boroughs. Therefore I added the black box as a way to visually group the data by boroughs.
 
-Typography: For the text in the graph and infographic I used the font Alegreya, I though it was a nice font and it was one of the few I liked. I think it's easy to read and understand and is not overly fancy or flamboyant.
+Typography: For the text in the graph and infographic I used the font Alegreya, I though it was a nice font and it was one of the few I liked. I think it's easy to read and understand and is not overly fancy or flamboyant. The text is Calibri Sans in the infographic.
 
 General Design: The placement of my graphs in the visualization follow a see the big picture of all NYC trees and then zoom into a specific neighborhood. Then zoom back out to look at the diameter distribution. I also decided to add background information on how many trees and how the data was collected because I though it is what made the dataset unique. I also added text highlighting the major findings such as what was the total percent of dead trees. What borough saw the highest percent of dead trees and what was the value. This helped center and contextualize the data instead of just providing numbers.
 
 Accessibility: I added alt text to all my figures for readers that are visually impaired. For my color choice I picked shades of green and brown that were easy to distinguish and are colorblind-friendly.
 
-DEI lens: I think this is something I can further improve on now that I have identified what neighborhood has the highest percent of dead trees does this neighborhood have high population of low income? Can this be expressed across all neighborhoods does the median income relate to the mnumber of dead trees? 
-
-
+DEI lens: I think this is something I can further improve on now that I have identified what neighborhood has the highest percent of dead trees does this neighborhood have high population of low income? Can this be expressed across all neighborhoods does the median income relate to the number of dead trees?
 
 # Infographic
 
+![](plots/Dark%20Green%20Brown%20Illustrative%20Geography%20Biomes%20Infographic%20(Infographic).png)
