@@ -76,6 +76,7 @@ library(treemap)
 library(showtext)
 library(gt)
 library(leaflet)
+library(ggforce)
 ```
 
 ```{r}
@@ -108,13 +109,13 @@ I first grouped them by borough and summarized the number of trees in each healt
 
 ```{r, include = FALSE}
 # Read in 2015 NYC Street Tree Census data 
-nyc_trees <- st_read("~/MEDS_FOLDER/hazelvaq.github.io/data/tree_data/geo_export_145e1dbe-8d16-4451-aa07-a8915754603a.shp")
+nyc_trees <- st_read("~/hazelvaq.github.io/tree_data/geo_export_145e1dbe-8d16-4451-aa07-a8915754603a.shp")
 
 # Read in NYC boundary
-nyc_boundary <- st_read("~/MEDS_FOLDER/hazelvaq.github.io/data/nyc_boundary/geo_export_cba87a71-9b4b-45bc-9ca2-8cd5cf2eabdb.shp")
+nyc_boundary <- st_read("~/hazelvaq.github.io/nyc_boundary/geo_export_cba87a71-9b4b-45bc-9ca2-8cd5cf2eabdb.shp")
 ```
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, fig.alt="NYC street trees health status treemap. They are divided into 4 categories: good, fair, poor, and dead. Queens has the highest amount of good trees."}
 # First Visualization ----
 # Treemap
 
@@ -154,7 +155,7 @@ The first part of this visualization is determine what borough has the highest a
 
 *Data Preparation* 
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, fig.alt= "Table of NYC 5 borought total percent of dead trees. Bronx identified as the borough with the highest percent of dead tree"}
 # Borough dead and stump tree count
 boro <- nyc_trees %>% 
   filter(status == "Dead" | status == "Stump") %>% 
@@ -188,7 +189,7 @@ gt(boro_merge %>%
 
 The Bronx is identified as the the borough with the highest percentage of dead tree. Then to further analyze I determined what neighborhood in the Bronx has the highest percentage of dead trees. 
 
-```{r}
+```{r, fig.alt= "Table of the top 5 neighborhoods in the Bronx with the highest percent of dead trees. Bronxdale identified as the highest"}
 ### Neighborhood in the Bronx with highest amount of dead tree
 bronx_neigh_dead <- nyc_trees %>% 
   filter(boroname == "Bronx") %>% 
@@ -226,7 +227,7 @@ Bronxdale was identified as the neighborhood in the Bronx with the highest perce
 
 Next I prepped the boundary for Bronxdale neighborhood. 
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, fig.alt= "Map of the Bronx, New York with the neighborhood Bronxdale highlighted in red"}
 # BRONX boundary
 bronx_bounds <- nyc_boundary %>% 
   filter(boro_name == "Bronx")
@@ -258,7 +259,7 @@ leaflet() %>%
 ```
 I was able to calculate the frequency of dead street trees for each street by creating a buffer around the streets. Any tree that fell within that buffer was countes as a part of that street. 
 
-```{r}
+```{r, fig.alt= "Streets in Bronxdale, Bronx, New York mapping dead street tree frequency. Bronx Park East the street with the most dead trees at 19 dead trees."}
 ## Load in Highways and roads in Bronxdale ----
 bush_roads_raw <- 
   st_bbox(bronxdale) %>%
@@ -328,21 +329,27 @@ p2 <- ggplot() +
                        name = "Dead Trees Frequency",
                        breaks = c(0, 5, 10, 15, 20),
                        limits = c(0,20)) +
-  labs(title = stringr::str_wrap("Streets in Bronxdale, Bronx that require the most street tree rehabilitation")) +
+  labs(
+    title = stringr::str_wrap(
+      "Streets in Bronxdale, Bronx that require the most street tree rehabilitation")) +
   theme_void() +
   theme(plot.title = element_text(family = "alegreya", 
-                                  size = 20, face = "bold"),
+                                  size = 8, face = "bold"),
         legend.text = element_text(family = "alegreya",
-                                   size = 20),
+                                   size = 8),
         legend.title = element_text(family = "alegraya",
-                                    size = 20)) 
+                                    size = 8)) 
 
 p2
+
+ggsave("plots/trees_street.png")
 ```
 
 ## Dead Trees Diameter Distribution
 
-```{r}
+The third question was answered by developing a visualization of tree trunk diameter for all reported dead trees is NYC. I initially graphed the distribution as a histogram to get a general idea of the distribution of the diameter. It was heavily skewed to the left with a majority of reported diameters being less than 10 inches. My approach was to set diameter ranges and determine how many trees fell within each range and then calculated the percent of trees in each range. Starting from 10, I increase in increments of 10 up to 40 inches. The idea behind this visualization was to make circles relative to the percentage of trees in the range. I wanted them to be circular to represent tree stumps and then through Canva I overlayed a tree ring design to each circle.  
+
+```{r, fig.alt= "Varying circles displaying the percentage of dead street trees in diameter ranges (0-10,10-20,30-40,40+ inches). 58% of the dead trees fall in the 0-10 inches range "}
 # Analyzing the distribution of trunk diameter of dead trees ---
 
 # Filter to Dead and Stump classified trees 
@@ -357,10 +364,6 @@ d <- dead_trees %>%
 # Drop geometry
 d1 <- d %>% select(diam) %>% 
   st_drop_geometry()
-
-# View the distribution of the diameters
-summary(d1)
-
 
 # Set the breaks for the diameter ranges
 diameters <- d1 %>% 
@@ -383,8 +386,8 @@ diameters <- d1 %>%
 p3 <- ggplot(data = diameters) +
   geom_circle(aes(x0 = x0, y0 = y0, r = r), fill = tree_palette["dead"]) +
   geom_text(aes(x = x0, y = y0, label = scales::percent(percent)),
-            color = "white", size = 5, fontface = "bold") +
-  geom_text(aes(x = x0, y = -3, label = range), color = "black", size = 5, fontface = "bold") +
+            color = "white", size = 4, fontface = "bold") +
+  geom_text(aes(x = x0, y = -3, label = range), color = "black", size = 3, fontface = "bold") +
   theme(text = element_text(family = "alegreya")) +
   theme_void() +
   coord_fixed()
@@ -392,12 +395,30 @@ p3 <- ggplot(data = diameters) +
 p3
 
 # Save plot
-# ggsave("plots/p3.png", bg = "transparent",width = 15, height = 10)
+ggsave("plots/tree_diameter.png", bg = "transparent",width = 15, height = 10)
 
 ```
 
-
+About 59% of the dead trees have a diameter between 0-10 inches. This is a bit concerning because this tells us younger trees are dying the most. They are not surviving past a certain age and this is something the NYC Parks and Recreation should consider investigating. 
 # Design Elements
+
+The design elements of this infographic were chosen carefully and took into consideration the following factors:
+
+Text: The final graph, tree diameter, did not have a title coded in `ggplot` because I had difficulty getting it to align and be the right size. So I added the title for this graph in Canva. The captions and subtitles were also added through Canva as I found it difficult to align it how I would have liked in R.
+
+Themes: I removed grid lines and grid boxes for all of my the plots to have a simple clean background. I added a beige color background to the final infographic to contrast the green and brown in my color theme. 
+
+Colors: I created two palettes and are in the first code chunk in this blog post. I wanted to stick to a tree color theme and my main colors are brown and green. I stuck to colors within that range when creating the treemap. I wanted the emphasis to be solely on the dead tree section and not the different boroughs. Therefore I added the black box as a way to visually group the data by boroughs.
+
+Typography: For the text in the graph and infographic I used the font Alegreya, I though it was a nice font and it was one of the few I liked. I think it's easy to read and understand and is not overly fancy or flamboyant.
+
+General Design: The placement of my graphs in the visualization follow a see the big picture of all NYC trees and then zoom into a specific neighborhood. Then zoom back out to look at the diameter distribution. I also decided to add background information on how many trees and how the data was collected because I though it is what made the dataset unique. I also added text highlighting the major findings such as what was the total percent of dead trees. What borough saw the highest percent of dead trees and what was the value. This helped center and contextualize the data instead of just providing numbers.
+
+Accessibility: I added alt text to all my figures for readers that are visually impaired. For my color choice I picked shades of green and brown that were easy to distinguish and are colorblind-friendly.
+
+DEI lens: I think this is something I can further improve on now that I have identified what neighborhood has the highest percent of dead trees does this neighborhood have high population of low income? Can this be expressed across all neighborhoods does the median income relate to the mnumber of dead trees? 
+
+
 
 # Infographic
 

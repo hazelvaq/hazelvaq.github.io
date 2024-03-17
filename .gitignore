@@ -7,3 +7,7 @@
 
 /.quarto/
 /blog/2023-12-15-az-west-nile-endemic-analysis/data
+
+# Data
+/tree_data
+/nyc_boundary
