@@ -140,7 +140,8 @@ treemap(bstatus,
         align.labels = list(c("center","center"),c("left","top")),
         force.print.labels = TRUE,
         title = "NYC Street Tree Health Status",
-        fontfamily.title = "alegreya"
+        fontfamily.title = "alegreya",
+        fontface.labels = "bold"
         ) 
 
 ```
