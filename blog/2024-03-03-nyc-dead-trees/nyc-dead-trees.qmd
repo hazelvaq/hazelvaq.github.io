@@ -14,7 +14,7 @@ format:
   html: 
     code-fold: true
     toc: true
-image: ""
+image: tree_cover.JPG
 draft: false
 ---
 
